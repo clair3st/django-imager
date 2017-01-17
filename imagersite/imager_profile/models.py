@@ -7,6 +7,16 @@ from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 
 
+class IsActveManager(models.Manager):
+    """This returns the active users, manager subclass."""
+
+    def get_queryset(self):
+        """Return a list of active users."""
+        return super(IsActveManager, self).get_queryset().filter(
+            user__is_active=True
+        )
+
+
 @python_2_unicode_compatible
 class UserProfile(models.Model):
     """The library patron and all of its attributes."""
@@ -65,16 +75,13 @@ class UserProfile(models.Model):
                                   blank=True,
                                   null=True)
 
-    objects = models.IsActveManager()
+    objects = models.Manager()  # the default manager
+
+    active = IsActveManager()
 
     def __str__(self):
         """String representation of UserProfile."""
-        return self.user.name
-
-class IsActveManager(models.Manager):
-    """This returns the active users."""
-    def get_queryset(self):
-        return super(IsActveManager, self).get_queryset().filter(is_active=True)
+        return self.user.username
 
 
 @receiver(post_save, sender=User)
