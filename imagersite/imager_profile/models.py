@@ -58,16 +58,23 @@ class UserProfile(models.Model):
     bio = models.CharField(max_length=255, blank=True, null=True)
     website = models.CharField(max_length=255, blank=True)
     hireable = models.BooleanField(default=True)
-    travel_radius = models.PositiveSmallIntegerField()
-    phone = models.CharField()
+    travel_radius = models.PositiveSmallIntegerField(default=5)
+    phone = models.CharField(max_length=12)
     photo_type = models.CharField(max_length=255,
                                   choices=STYLES,
                                   blank=True,
                                   null=True)
 
+    objects = models.IsActveManager()
+
     def __str__(self):
         """String representation of UserProfile."""
         return self.user.name
+
+class IsActveManager(models.Manager):
+    """This returns the active users."""
+    def get_queryset(self):
+        return super(IsActveManager, self).get_queryset().filter(is_active=True)
 
 
 @receiver(post_save, sender=User)
