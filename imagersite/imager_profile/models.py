@@ -1,13 +1,16 @@
+"""Create User Profile model."""
+
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save # <-- after saving a thing, do a thing
-from django.dispatch import receiver # <-- listen for thing to be done
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils.encoding import python_2_unicode_compatible
 
-# Create your models here.
 
-
+@python_2_unicode_compatible
 class UserProfile(models.Model):
     """The library patron and all of its attributes."""
+
     CANNON = 'CA'
     NIKON = 'NI'
     OLYMPUS = 'OL'
@@ -46,16 +49,29 @@ class UserProfile(models.Model):
         related_name="profile",
         on_delete=models.CASCADE,
     )
-    camera = models.CharField(max_length=255, choices=CAMERAS, blank=True, null=True)
+
+    camera = models.CharField(max_length=255,
+                              choices=CAMERAS,
+                              blank=True,
+                              null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     bio = models.CharField(max_length=255, blank=True, null=True)
     website = models.CharField(max_length=255, blank=True)
     hireable = models.BooleanField(default=True)
     travel_radius = models.PositiveSmallIntegerField()
     phone = models.CharField()
-    photo_type = models.CharField(max_length=255, choices=STYLES, blank=True, null=True)
+    photo_type = models.CharField(max_length=255,
+                                  choices=STYLES,
+                                  blank=True,
+                                  null=True)
+
+    def __str__(self):
+        """String representation of UserProfile."""
+        return self.user.name
+
 
 @receiver(post_save, sender=User)
 def make_profile_for_user(sender, instance, **kwargs):
+    """Make a profile for User."""
     new_profile = UserProfile(user=instance)
     new_profile.save()
