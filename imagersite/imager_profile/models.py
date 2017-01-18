@@ -65,8 +65,8 @@ class UserProfile(models.Model):
                               blank=True,
                               null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
-    bio = models.CharField(max_length=255, blank=True, null=True)
-    website = models.CharField(max_length=255, blank=True)
+    bio = models.TextField(blank=True, null=True)
+    website = models.URLField(blank=True)
     hireable = models.BooleanField(default=True)
     travel_radius = models.PositiveSmallIntegerField(default=5)
     phone = models.CharField(max_length=12)
