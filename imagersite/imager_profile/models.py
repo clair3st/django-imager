@@ -83,6 +83,11 @@ class UserProfile(models.Model):
         """String representation of UserProfile."""
         return self.user.username
 
+    @property
+    def is_active(self):
+        """Return true if the user is active."""
+        return self.user.is_active
+
 
 @receiver(post_save, sender=User)
 def make_profile_for_user(sender, instance, **kwargs):
