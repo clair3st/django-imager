@@ -131,3 +131,10 @@ LOGIN_REDIRECT_URL = 'home'
 ACCOUNT_ACTIVATION_DAYS = 7
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = 'coding.projects17@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ["EMAIL_PASSWORD"]
