@@ -1,4 +1,4 @@
-"""imagersite URL Configuration
+"""imagersite URL Configuration.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.10/topics/http/urls/
@@ -15,13 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from imagersite.views import (
-    home_view,
-    test_view
-)
+from imagersite.views import home_view
+
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^home$', home_view, name="home")
-    url(r'^(?P<num>/(?P<word>$', test_view, name="test")
+    # url(r'^admin/', admin.site.urls),
+    url(r'^$', home_view, name="home"),
+    # url(r'^(?P<num>/(?P<word>$', test_view, name="test"),
 ]
