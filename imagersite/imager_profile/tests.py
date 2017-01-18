@@ -41,3 +41,8 @@ class UserTestCase(TestCase):
         """Test we can detect active users."""
         active_users = UserProfile.active
         self.assertTrue(active_users.count() == 20)
+
+    def test_is_active_user_method(self):
+        """Test we can detect active users."""
+        profile = UserProfile.objects.first()
+        self.assertTrue(profile.is_active)
