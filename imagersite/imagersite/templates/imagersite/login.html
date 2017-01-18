@@ -1,8 +1,7 @@
-{% extends 'imagersite/base.html' %}
+{% extends 'imagersite/layout.html' %}
 
-{% block title %}Login{% endblock %}
 
-{% block content %}
+{% block body %}
   <h2>Login</h2>
   <form method="post">
     {% csrf_token %}
