@@ -16,10 +16,14 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from imagersite.views import home_view
-
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^$', home_view, name="home"),
     # url(r'^(?P<num>/(?P<word>$', test_view, name="test"),
+    url(r'^login$', auth_views.login, name="login"),
+    url(r'^logout$', auth_views.logout, name="logout"),
+    url(r'^registration$', include('registration.backends.model_activation.urls'), name="registration"),
 ]
+
