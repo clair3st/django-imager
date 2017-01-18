@@ -1,5 +1,5 @@
 from django.contrib import admin
-from imagersite.models import UserProfile
+from imager_profile.models import UserProfile
 
 # Register your models here.
 
