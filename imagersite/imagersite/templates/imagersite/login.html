@@ -2,7 +2,9 @@
 
 
 {% block body %}
-  <h2>Login</h2>
+<div class="page-header">
+        <h1>Login</h1>
+      </div>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
