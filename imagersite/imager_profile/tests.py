@@ -53,6 +53,31 @@ class UserTestCase(TestCase):
         profile = UserProfile.objects.first()
         self.assertTrue(profile.is_active)
 
+        def test_inactive_users_are_not_counted_in_active(self):
+        """Test inactive users are not in active list."""
+        this_user = self.users[0]
+        this_user.is_active = False
+        this_user.save()
+        self.assertTrue(UserProfile.active.count() == User.objects.count() - 1)
+
+    def test_user_has_profile_with_camera(self):
+        """Test users have profile with camera options."""
+        this_user = self.users[0]
+        this_user.camera = 'NIKON'
+        this_user.save()
+        self.assertTrue(this_user.camera == 'NIKON')
+
+    def test_user_has_profile_with_a_new_camera(self):
+        """Test users have profile with camera options."""
+        this_user = self.users[0]
+        this_user.camera = 'NIKON'
+        old_camera = this_user.camera
+        this_user.save()
+        this_user.camera = 'PHONE'
+        this_user.save()
+        self.assertFalse(old_camera == this_user.camera)
+
+
 
 class ProfileFrontEndTests(TestCase):
     """."""
