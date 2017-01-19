@@ -1,4 +1,4 @@
-# django-imager
+# django-imager [![Build Status](https://travis-ci.org/clair3st/django-imager.svg?branch=models-1)](https://travis-ci.org/clair3st/django-imager)
  simple image management website using Django.
 
 **Authors:** Claire Gatenby and Colin Lamont
