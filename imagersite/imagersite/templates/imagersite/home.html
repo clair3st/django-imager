@@ -1,26 +1,16 @@
+{% extends 'imagersite/base.html' %}
 {% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- <link rel="icon" href="../../favicon.ico"> -->
 
-    <title>Imager home</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'imagersite/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+{% block title %}IMAGE-nation home{% endblock title %}
+
     
-    <link href="{% static 'imagersite/cover.css' %}" rel="stylesheet">
+{% block stylesheets %}
+  <link href="{% static 'imagersite/cover.css' %}" rel="stylesheet">
+{% endblock stylesheets %}
 
-
-  </head>
-
-  <body>
+{% block content %}
+  <body style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url({% static 'imagersite/IMG_2790.jpg' %})">
   
     <div class="site-wrapper">
 
@@ -30,17 +20,16 @@
 
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">IMAGE-Nation</h3>
+              <!-- <h3 class="masthead-brand">IMAGE-Nation</h3> -->
               <nav>
                 <ul class="nav masthead-nav">
                   <li class="active"><a href="/">Home</a></li>
                   {% if user.is_authenticated %}
-                  <li><a href="{% url 'registration_register' %}">Register</a></li>
-                  <li><a href="{% url 'login' %}">Login</a></li>
-                  <li><a>{{ user.get.username }}</a></li>
+                  <li><a href="{% url 'logout' %}">Logout</a></li>
+                  <li><a>{{ user.username }}</a></li>
                   {% endif %}
                   {% if not user.is_authenticated %}
-                  <li><a href="{% url 'logout' %}">Logout</a></li>
+                  <li><a href="{% url 'login' %}">Login</a></li>
                   {% endif %}
                 </ul>
               </nav>
@@ -51,13 +40,15 @@
             <h1 class="cover-heading">IMAGE-Nation</h1>
             <p class="lead">Join other photographers like you on Imager site. Use to host your photos</p>
             <p class="lead">
-              <a href="#" class="btn btn-lg btn-default">Learn more</a>
+                {% if not user.is_authenticated %}
+                  <a href="{% url 'registration_register' %}" class="btn btn-lg btn-default">Join Today!</a>
+                {% endif %}
             </p>
           </div>
 
           <div class="mastfoot">
             <div class="inner">
-              <p>IMAGE-Nation 2017</p>
+              <footer>IMAGE-Nation 2017</footer>
             </div>
           </div>
 
@@ -67,12 +58,4 @@
 
     </div>
 
-
-  <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="{% static 'imagersite/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
-  </body>
-</html>
+    {% endblock %}

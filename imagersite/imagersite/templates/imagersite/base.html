@@ -10,52 +10,19 @@
     <meta name="author" content="">
     <!-- <link rel="icon" href="../../favicon.ico"> -->
 
-    <title>Imager home</title>
+    <title>{% block title %}IMAGE-nation{% endblock title %}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'imagersite/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'imagersite/sticky-footer-navbar.css' %}" rel="stylesheet">
-    <!-- <link href="{% static 'imagersite/cover.css' %}" rel="stylesheet"> -->
-
+    {% block stylesheets %}
+    {% endblock stylesheets %}
 
   </head>
 
   <body>
-
- <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">IMAGE-nation</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
-            <li><a href="login">Login</a></li>
-            <li><a href="">Register</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-    <!-- Begin page content -->
-    <div class="container">
       
       {% block content %}
       {% endblock %}
-    </div>
-
-    <footer class="footer">
-      <div class="container">
-        <p class="text-muted">IMAGE-Nation 2017</p>
-      </div>
-    </footer>
 
 
     <!-- Bootstrap core JavaScript
