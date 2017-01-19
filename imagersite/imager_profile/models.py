@@ -89,8 +89,9 @@ class UserProfile(models.Model):
         return self.user.is_active
 
 
-# @receiver(post_save, sender=User)
-# def make_profile_for_user(sender, instance, **kwargs):
-#     """Make a profile for User."""
-#     new_profile = UserProfile(user=instance)
-#     new_profile.save()
+@receiver(post_save, sender=User)
+def make_profile_for_user(sender, instance, **kwargs):
+    """Make a profile for User."""
+    if kwargs["created"]:
+        new_profile = UserProfile(user=instance)
+        new_profile.save()
