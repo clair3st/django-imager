@@ -35,12 +35,12 @@
                 <ul class="nav masthead-nav">
                   <li class="active"><a href="/">Home</a></li>
                   {% if user.is_authenticated %}
-                  <li><a href="{% url 'registration_register' %}">Register</a></li>
-                  <li><a href="{% url 'login' %}">Login</a></li>
-                  <li><a>{{ user.get.username }}</a></li>
+                  <li><a href="{% url 'logout' %}">Logout</a></li>
+                  <li><a>{{ user.get_username  }}</a></li>
                   {% endif %}
                   {% if not user.is_authenticated %}
-                  <li><a href="{% url 'logout' %}">Logout</a></li>
+                  <li><a href="{% url 'registration_register' %}">Register</a></li>
+                  <li><a href="{% url 'login' %}">Login</a></li>
                   {% endif %}
                 </ul>
               </nav>
@@ -51,7 +51,7 @@
             <h1 class="cover-heading">IMAGE-Nation</h1>
             <p class="lead">Join other photographers like you on Imager site. Use to host your photos</p>
             <p class="lead">
-              <a href="#" class="btn btn-lg btn-default">Learn more</a>
+              <!-- <a href="#" class="btn btn-lg btn-default">Join Now</a> -->
             </p>
           </div>
 
