@@ -1,6 +1,15 @@
- {% extends 'imagersite/base.html' %}
+{% extends 'imagersite/base.html' %}
+{% load staticfiles %}
 
- {% block content %}
+
+{% block title %}IMAGE-nation{% endblock title %}
+
+    
+{% block stylesheets %}
+    <link href="{% static 'imagersite/sticky-footer-navbar.css' %}" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
  <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
@@ -18,7 +27,7 @@
             <li class="active"><a href="/">Home</a></li>
             {% if user.is_authenticated %}
             <li><a href="{% url 'logout' %}">Logout</a></li>
-            <li><a>{{ user.get_username  }}</a></li>
+            <li><a>{{ user.username }}</a></li>
             {% endif %}
             {% if not user.is_authenticated %}
             <li><a href="{% url 'registration_register' %}">Register</a></li>
@@ -31,16 +40,13 @@
 
     <!-- Begin page content -->
     <div class="container">
-      <div class="page-header">
-        <!-- <h1></h1> -->
-      </div>
       {% block body %}
-      {% endblock%}
+      {% endblock body%}
     </div>
 
     <footer class="footer">
       <div class="container">
-        <!-- <p class="text-muted">Place sticky footer content here.</p> -->
+        <p>IMAGE-Nation 2017</p>
       </div>
     </footer>
-{% endblock %}
+{% endblock content%}
