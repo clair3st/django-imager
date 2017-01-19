@@ -6,6 +6,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 
+from imager_images.models import Album, Photo
+
+
 
 class IsActiveManager(models.Manager):
     """This returns the active users, manager subclass."""
@@ -21,37 +24,24 @@ class IsActiveManager(models.Manager):
 class UserProfile(models.Model):
     """The library patron and all of its attributes."""
 
-    CANNON = 'CA'
-    NIKON = 'NI'
-    OLYMPUS = 'OL'
-    SONY = 'SO'
-    PANASONIC = 'PA'
-    PHONE = 'PH'
     CAMERAS = (
-        (CANNON, "Cannon"),
-        (NIKON, "Nikon"),
-        (OLYMPUS, "Olympus"),
-        (SONY, "Sony"),
-        (PANASONIC, "Panasonic"),
-        (PHONE, "Phone"),
+        ('CANNON', "Cannon"),
+        ('NIKON', "Nikon"),
+        ('OLYMPUS', "Olympus"),
+        ('SONY', "Sony"),
+        ('PANASONIC', "Panasonic"),
+        ('PHONE', "Phone"),
     )
-    LANDSCAPE = 'LA'
-    BW = 'BW'
-    PORTRAIT = 'PO'
-    WEDDING = 'WE'
-    SPORTS = 'SP'
-    WILDLIFE = 'WI'
-    URBAN = 'UR'
-    TRAVEL = 'TR'
+
     STYLES = (
-        (LANDSCAPE, "Landscape"),
-        (BW, "Black and White"),
-        (PORTRAIT, "Portrait"),
-        (WEDDING, "Wedding"),
-        (SPORTS, "Sports"),
-        (WILDLIFE, "Wildlife"),
-        (URBAN, "Urban"),
-        (TRAVEL, "Travel"),
+        ('LANDSCAPE', "Landscape"),
+        ('BW', "Black and White"),
+        ('PORTRAIT', "Portrait"),
+        ('WEDDING', "Wedding"),
+        ('SPORTS', "Sports"),
+        ('WILDLIFE', "Wildlife"),
+        ('URBAN', "Urban"),
+        ('TRAVEL', "Travel"),
     )
 
     user = models.OneToOneField(
@@ -79,6 +69,16 @@ class UserProfile(models.Model):
 
     active = IsActiveManager()
 
+    albums = models.ForeignKey(Album,
+                               related_name='owner',
+                               blank=True,
+                               null=True)
+
+    photo = models.OneToOneField(Photo,
+                                 related_name='photographer',
+                                 blank=True,
+                                 null=True)
+
     def __str__(self):
         """String representation of UserProfile."""
         return self.user.username
@@ -89,8 +89,9 @@ class UserProfile(models.Model):
         return self.user.is_active
 
 
-# @receiver(post_save, sender=User)
-# def make_profile_for_user(sender, instance, **kwargs):
-#     """Make a profile for User."""
-#     new_profile = UserProfile(user=instance)
-#     new_profile.save()
+@receiver(post_save, sender=User)
+def make_profile_for_user(sender, instance, **kwargs):
+    """Make a profile for User."""
+    if kwargs["created"]:
+        new_profile = UserProfile(user=instance)
+        new_profile.save()
