@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^$', home_view, name="home"),
     # url(r'^(?P<num>/(?P<word>$', test_view, name="test"),
-    url(r'^login$', auth_views.login, name="login"),
-    url(r'^logout$', auth_views.logout, name="logout"),
+    url(r'^login/$', auth_views.login, name="login"),
+    # url(r'^logout$', auth_views.logout, name="logout"),
+    url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+
 ]
