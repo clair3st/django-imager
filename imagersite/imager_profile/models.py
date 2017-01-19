@@ -7,12 +7,12 @@ from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 
 
-class IsActveManager(models.Manager):
+class IsActiveManager(models.Manager):
     """This returns the active users, manager subclass."""
 
     def get_queryset(self):
         """Return a list of active users."""
-        return super(IsActveManager, self).get_queryset().filter(
+        return super(IsActiveManager, self).get_queryset().filter(
             user__is_active=True
         )
 
@@ -77,7 +77,7 @@ class UserProfile(models.Model):
 
     objects = models.Manager()  # the default manager
 
-    active = IsActveManager()
+    active = IsActiveManager()
 
     def __str__(self):
         """String representation of UserProfile."""
