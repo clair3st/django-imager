@@ -20,6 +20,3 @@ script:
 
 after_success:
   - coveralls
-
-env:
-  - USER_NAME=clairegatenby
