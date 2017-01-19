@@ -127,8 +127,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
 LOGIN_REDIRECT_URL = 'home'
 
+
+# Email setup
 ACCOUNT_ACTIVATION_DAYS = 7
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -139,3 +143,5 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = 'coding.projects17@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ["EMAIL_PASSWORD"]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'MEDIA')
