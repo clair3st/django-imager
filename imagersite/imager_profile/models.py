@@ -21,37 +21,25 @@ class IsActiveManager(models.Manager):
 class UserProfile(models.Model):
     """The library patron and all of its attributes."""
 
-    CANNON = 'CA'
-    NIKON = 'NI'
-    OLYMPUS = 'OL'
-    SONY = 'SO'
-    PANASONIC = 'PA'
-    PHONE = 'PH'
     CAMERAS = (
-        (CANNON, "Cannon"),
-        (NIKON, "Nikon"),
-        (OLYMPUS, "Olympus"),
-        (SONY, "Sony"),
-        (PANASONIC, "Panasonic"),
-        (PHONE, "Phone"),
+        ('CANON', "Canon"),
+        ('NIKON', "Nikon"),
+        ('OLYMPUS', "Olympus"),
+        ('SONY', "Sony"),
+        ('PANASONIC', "Panasonic"),
+        ('PHONE', "Smart Phone"),
     )
-    LANDSCAPE = 'LA'
-    BW = 'BW'
-    PORTRAIT = 'PO'
-    WEDDING = 'WE'
-    SPORTS = 'SP'
-    WILDLIFE = 'WI'
-    URBAN = 'UR'
-    TRAVEL = 'TR'
+
     STYLES = (
-        (LANDSCAPE, "Landscape"),
-        (BW, "Black and White"),
-        (PORTRAIT, "Portrait"),
-        (WEDDING, "Wedding"),
-        (SPORTS, "Sports"),
-        (WILDLIFE, "Wildlife"),
-        (URBAN, "Urban"),
-        (TRAVEL, "Travel"),
+        ('LANDSCAPE', "Landscape"),
+        ('BW', "Black and White"),
+        ('PORTRAIT', "Portrait"),
+        ('WEDDING', "Wedding"),
+        ('SPORTS', "Sports"),
+        ('WILDLIFE', "Wildlife"),
+        ('URBAN', "Urban"),
+        ('TRAVEL', "Travel"),
+        ('LE', 'Long Exposure'),
     )
 
     user = models.OneToOneField(
@@ -92,5 +80,6 @@ class UserProfile(models.Model):
 @receiver(post_save, sender=User)
 def make_profile_for_user(sender, instance, **kwargs):
     """Make a profile for User."""
-    new_profile = UserProfile(user=instance)
-    new_profile.save()
+    if kwargs["created"]:
+        new_profile = UserProfile(user=instance)
+        new_profile.save()
