@@ -57,16 +57,84 @@ class UserTestCase(TestCase):
     def test_user_has_profile_with_camera(self):
         """Test users have profile with camera options."""
         this_user = self.users[0]
-        this_user.camera = 'NIKON'
+        this_user.profile.camera = 'NIKON'
         this_user.save()
-        self.assertTrue(this_user.camera == 'NIKON')
+        self.assertTrue(self.users[0].profile.camera == 'NIKON')
 
     def test_user_has_profile_with_a_new_camera(self):
-        """Test users have profile with camera options."""
+        """Test user who changes camera type updates test db with new camera."""
         this_user = self.users[0]
-        this_user.camera = 'NIKON'
-        old_camera = this_user.camera
+        this_user.profile.camera = 'NIKON'
+        old_camera = this_user.profile.camera
         this_user.save()
-        this_user.camera = 'PHONE'
+        this_user.profile.camera = 'PHONE'
         this_user.save()
-        self.assertFalse(old_camera == this_user.camera)
+        self.assertFalse(old_camera == self.users[0].profile.camera)
+
+    def test_user_has_profile_with_photo_style(self):
+        """Test user has a profile with a style of photography selected from choices."""
+        this_user = self.users[0]
+        this_user.profile.photo_type = 'WILDLIFE'
+        this_user.save()
+        self.assertTrue(self.users[0].profile.photo_type == 'WILDLIFE')
+
+    def test_user_has_profile_with_address(self):
+        """Test user profile with address has address in test db."""
+        this_user = self.users[0]
+        this_user.profile.address = '123 Cherry Lane, Seattle WA 98101'
+        this_user.save()
+        self.assertTrue(self.users[0].profile.address == '123 Cherry Lane, Seattle WA 98101')
+
+    def test_user_profile_with_address_does_not_have_blank_addess(self):
+        """Test user profile with address doesn't have blank address in test db."""
+        this_user = self.users[0]
+        this_user.profile.address = 'WILDLIFE'
+        this_user.save()
+        self.assertFalse(self.users[0].profile.address is None)
+
+    def test_user_has_profile_with_bio(self):
+        """Test user has a profile with a bio."""
+        this_user = self.users[0]
+        this_user.profile.bio = 'I take beautiful pictures. You should hire me.'
+        this_user.save()
+        self.assertTrue(self.users[0].profile.bio == 'I take beautiful pictures. You should hire me.')
+
+    def test_user_has_profile_with_website(self):
+        """Test user has a profile with a website."""
+        this_user = self.users[0]
+        this_user.profile.website = 'http://www.photoloco.com'
+        this_user.save()
+        self.assertTrue(self.users[0].profile.website == 'http://www.photoloco.com')
+
+    def test_user_has_profile_is_hirable_by_default(self):
+        """Test user has a profile is hireable by default."""
+        this_user = self.users[0]
+        this_user.save()
+        self.assertTrue(self.users[0].profile.hireable is True)
+
+    def test_user_has_profile_is_not_hirable(self):
+        """Test user has a profile isn't hireable when set in test db."""
+        this_user = self.users[0]
+        this_user.profile.hireable = False
+        this_user.save()
+        self.assertTrue(self.users[0].profile.hireable is False)
+
+    def test_user_profile_has_default_travel_radius(self):
+        """Test user profile has a default travel radius of 5."""
+        this_user = self.users[0]
+        this_user.save()
+        self.assertTrue(self.users[0].profile.travel_radius == 5)
+
+    def test_user_profile_has_travel_radius_of_15(self):
+        """Test user profile has a travel radius of 15 in test db."""
+        this_user = self.users[0]
+        this_user.profile.travel_radius = 15
+        this_user.save()
+        self.assertTrue(self.users[0].profile.travel_radius == 15)
+
+    def test_user_profile_has_phone_number(self):
+        """Test user profile has a phone number in test db."""
+        this_user = self.users[0]
+        this_user.profile.phone = "206-555-1212"
+        this_user.save()
+        self.assertTrue(self.users[0].profile.phone == "206-555-1212")
