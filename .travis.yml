@@ -1,0 +1,30 @@
+language: python
+python:
+  - "2.7"
+  - "3.5"
+
+services:
+  - postgresql
+
+before_script:
+  - psql -c "create database imagersite;" -U postgres
+
+# command to install dependencies
+install:
+  - pip install -r requirements.pip
+  # - pip install coveralls
+# command to run tests
+script: 
+  - python imagersite/manage.py migrate
+  - coverage run imagersite/manage.py test imagersite
+
+after_success:
+  # - coveralls
+
+# safelist
+branches:
+  only:
+  - models-1
+
+notifications:
+  email: false

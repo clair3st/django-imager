@@ -7,12 +7,12 @@ from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 
 
-class IsActveManager(models.Manager):
+class IsActiveManager(models.Manager):
     """This returns the active users, manager subclass."""
 
     def get_queryset(self):
         """Return a list of active users."""
-        return super(IsActveManager, self).get_queryset().filter(
+        return super(IsActiveManager, self).get_queryset().filter(
             user__is_active=True
         )
 
@@ -21,37 +21,25 @@ class IsActveManager(models.Manager):
 class UserProfile(models.Model):
     """The library patron and all of its attributes."""
 
-    CANNON = 'CA'
-    NIKON = 'NI'
-    OLYMPUS = 'OL'
-    SONY = 'SO'
-    PANASONIC = 'PA'
-    PHONE = 'PH'
     CAMERAS = (
-        (CANNON, "Cannon"),
-        (NIKON, "Nikon"),
-        (OLYMPUS, "Olympus"),
-        (SONY, "Sony"),
-        (PANASONIC, "Panasonic"),
-        (PHONE, "Phone"),
+        ('CANON', "Canon"),
+        ('NIKON', "Nikon"),
+        ('OLYMPUS', "Olympus"),
+        ('SONY', "Sony"),
+        ('PANASONIC', "Panasonic"),
+        ('PHONE', "Smart Phone"),
     )
-    LANDSCAPE = 'LA'
-    BW = 'BW'
-    PORTRAIT = 'PO'
-    WEDDING = 'WE'
-    SPORTS = 'SP'
-    WILDLIFE = 'WI'
-    URBAN = 'UR'
-    TRAVEL = 'TR'
+
     STYLES = (
-        (LANDSCAPE, "Landscape"),
-        (BW, "Black and White"),
-        (PORTRAIT, "Portrait"),
-        (WEDDING, "Wedding"),
-        (SPORTS, "Sports"),
-        (WILDLIFE, "Wildlife"),
-        (URBAN, "Urban"),
-        (TRAVEL, "Travel"),
+        ('LANDSCAPE', "Landscape"),
+        ('BW', "Black and White"),
+        ('PORTRAIT', "Portrait"),
+        ('WEDDING', "Wedding"),
+        ('SPORTS', "Sports"),
+        ('WILDLIFE', "Wildlife"),
+        ('URBAN', "Urban"),
+        ('TRAVEL', "Travel"),
+        ('LE', 'Long Exposure'),
     )
 
     user = models.OneToOneField(
@@ -77,15 +65,21 @@ class UserProfile(models.Model):
 
     objects = models.Manager()  # the default manager
 
-    active = IsActveManager()
+    active = IsActiveManager()
 
     def __str__(self):
         """String representation of UserProfile."""
         return self.user.username
 
+    @property
+    def is_active(self):
+        """Return true if the user is active."""
+        return self.user.is_active
+
 
 @receiver(post_save, sender=User)
 def make_profile_for_user(sender, instance, **kwargs):
     """Make a profile for User."""
-    new_profile = UserProfile(user=instance)
-    new_profile.save()
+    if kwargs["created"]:
+        new_profile = UserProfile(user=instance)
+        new_profile.save()
