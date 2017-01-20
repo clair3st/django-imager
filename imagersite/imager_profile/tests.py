@@ -78,9 +78,8 @@ class UserTestCase(TestCase):
         self.assertFalse(old_camera == this_user.camera)
 
 
-
 class ProfileFrontEndTests(TestCase):
-    """."""
+    """Functional and Unit tests for front end views."""
 
     def setUp(self):
         """Test up dummy."""
@@ -131,33 +130,73 @@ class ProfileFrontEndTests(TestCase):
 
         self.assertTrue(response.redirect_chain[0][0] == "/")
 
+    def test_login_route_redirects_home_page_no_login(self):
+        """Test login route redirects to home page with no login link."""
+        new_user = UserFactory.create()
+        new_user.username = 'foo-bar'
+        new_user.set_password('wordpass')
+        new_user.save()
+        self.client.post("/login/", {
+            "username": new_user.username,
+            "password": 'wordpass'
+        }, follow=True)
+        response = self.client.get("/")
+        self.assertFalse('login' in response.content.decode())
+
+    def test_home_page_no_logout_when_not_logged_in(self):
+        """Test logout not on homepage."""
+        response = self.client.get("/")
+        self.assertFalse('logout' in response.content.decode())
+
+    def test_login_has_form(self):
+        """Test login has a form."""
+        response = self.client.get("/login/")
+        self.assertTrue('form' in response.rendered_content)
+
+    def test_registration_has_form(self):
+        """Test registration has a form."""
+        response = self.client.get("/accounts/register/")
+        self.assertTrue('form' in response.rendered_content)
+
     def register_foo(self, follow=False):
         """Fixture for registration of user."""
-        self.client.post("/accounts/register/", {
+        response = self.client.post("/accounts/register/", {
             "username": "Foo1234",
             "email": "foo@bar.com",
             "password1": "tugboats",
             "password2": "tugboats",
         }, follow=follow)
+        return response
 
     def test_register_new_user(self):
-        """."""
+        """Test I can register a new user and create an new user model."""
         self.assertTrue(User.objects.count() == 0)
         self.register_foo()
         self.assertTrue(User.objects.count() == 1)
 
     def test_registered_user_is_inactive(self):
-        """."""
+        """Test new created using is not active."""
         self.register_foo()
         the_user = User.objects.first()
         self.assertFalse(the_user.is_active)
 
     def test_successful_registration_status_302(self):
-        """."""
+        """Test registration redirects with 302 status code."""
         response = self.register_foo(follow=False)
         self.assertTrue(response.status_code == 302)
 
     def test_successful_registration_redirects_to_compelte(self):
-        """."""
+        """Test registration redirects to complete."""
         response = self.register_foo(follow=True)
-        self.assertTrue(response.redirect_chain[0][0] == "/accounts/register/complete/")
+        complete_url = "/accounts/register/complete/"
+        self.assertTrue(response.redirect_chain[0][0] == complete_url)
+
+    def test_successful_registration_email(self):
+        """Test registration redirects and activation redirects."""
+        response = self.register_foo(follow=False)
+        key = response.context['activation_key']
+        response2 = self.client.get(
+            "/accounts/activate/" + key + "/"
+        )
+        complete = '/accounts/activate/complete/'
+        self.assertTrue(response2.url == complete)
