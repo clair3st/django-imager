@@ -53,7 +53,7 @@ class UserTestCase(TestCase):
         profile = UserProfile.objects.first()
         self.assertTrue(profile.is_active)
 
-        def test_inactive_users_are_not_counted_in_active(self):
+    def test_inactive_users_are_not_counted_in_active(self):
         """Test inactive users are not in active list."""
         this_user = self.users[0]
         this_user.is_active = False
@@ -133,7 +133,7 @@ class ProfileFrontEndTests(TestCase):
 
     def register_foo(self, follow=False):
         """Fixture for registration of user."""
-        self.client.post("/registration/register/", {
+        self.client.post("/accounts/register/", {
             "username": "Foo1234",
             "email": "foo@bar.com",
             "password1": "tugboats",
@@ -149,9 +149,8 @@ class ProfileFrontEndTests(TestCase):
     def test_registered_user_is_inactive(self):
         """."""
         self.register_foo()
-
         the_user = User.objects.first()
-        self.assertFalse(the_user.isactive)
+        self.assertFalse(the_user.is_active)
 
     def test_successful_registration_status_302(self):
         """."""
@@ -161,4 +160,4 @@ class ProfileFrontEndTests(TestCase):
     def test_successful_registration_redirects_to_compelte(self):
         """."""
         response = self.register_foo(follow=True)
-        self.assertTrue(response.redirect_chain[0][0] == "/registration/register/complete")
+        self.assertTrue(response.redirect_chain[0][0] == "/accounts/register/complete/")
