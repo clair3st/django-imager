@@ -1,0 +1,17 @@
+{% extends 'imagersite/layout.html' %}
+
+
+{% block body %}
+      <h3>{{ album.title }}</h3>
+
+        {% for photo in album.contents.all %}
+
+              <p><em>Title: </em>{{ photo.title }}</p>
+              <p><em>Description: </em>{{ photo.description}}</p>
+              <p><em>Full size url: </em><a href="/media/{{photo.image}}">Link</a></p>
+              <p><em>Thumbnail: </em></p>
+              <img style="width: 100px;" src="/media/{{photo.image}}">
+
+        {% endfor %}
+  
+{% endblock %}
