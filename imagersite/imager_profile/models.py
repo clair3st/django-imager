@@ -6,8 +6,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 
-from imager_images.models import Album, Photo
-
 
 
 class IsActiveManager(models.Manager):
@@ -68,16 +66,6 @@ class UserProfile(models.Model):
     objects = models.Manager()  # the default manager
 
     active = IsActiveManager()
-
-    albums = models.ForeignKey(Album,
-                               related_name='owner',
-                               blank=True,
-                               null=True)
-
-    photo = models.OneToOneField(Photo,
-                                 related_name='photographer',
-                                 blank=True,
-                                 null=True)
 
     def __str__(self):
         """String representation of UserProfile."""
