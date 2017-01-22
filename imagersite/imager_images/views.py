@@ -36,7 +36,7 @@ def photo_detail(request, pk):
 
 def album_detail(request, pk):
     """Show a list of all photos in an album."""
-    album_id = Album.objects.filter(id=pk)
+    album_id = Album.objects.get(pk=pk)
     return render(request,
                   'imager_images/album_detail.html',
                   {'album': album_id})
