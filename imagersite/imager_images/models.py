@@ -9,6 +9,7 @@ SHARING = (
     ('PRIVATE', "Private"),
     ('SHARED', "Shared"),
     ('PUBLIC', "Public"),
+    ('', "Select to share")
 )
 
 
@@ -19,7 +20,7 @@ class Photo(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     description = models.CharField(max_length=255, blank=True, null=True)
     date_uploaded = models.DateField(auto_now_add=True)
-    date_modified = models.DateField(blank=True, null=True)
+    date_modified = models.DateField(auto_now_add=True)
     date_published = models.DateField(blank=True, null=True)
 
     photographer = models.OneToOneField(UserProfile,
@@ -43,8 +44,7 @@ class Album(models.Model):
 
     contents = models.ManyToManyField(Photo,
                                       related_name='in_album',
-                                      blank=True,
-                                      null=True)
+                                      blank=True)
 
     title = models.CharField(max_length=255, blank=True, null=True)
     description = models.CharField(max_length=255, blank=True, null=True)
