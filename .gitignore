@@ -89,5 +89,5 @@ ENV/
 .ropeproject
 
 # Ignore the files in the Media directory, but not the directory itself
-lending_library/MEDIA/*
-!lending_library/MEDIA/.gitkeep
+imagersite/MEDIA/*
+!imagersite/MEDIA/.gitkeep
