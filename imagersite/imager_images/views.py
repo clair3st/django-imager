@@ -26,17 +26,17 @@ def photo_list(request):
     return render(request, 'imager_images/photos.html', {'photos': photos})
 
 
-def photo_detail(request, id):
+def photo_detail(request, pk):
     """Show detail view of a photo."""
-    photo_id = Photo.objects.filter(id=id)
+    photo_id = Photo.objects.filter(id=pk)
     return render(request,
                   'imager_images/photo_detail.html',
                   {'photo': photo_id})
 
 
-def album_detail(request, id):
+def album_detail(request, pk):
     """Show a list of all photos in an album."""
-    album_id = Album.objects.filter(id=id)
+    album_id = Album.objects.filter(id=pk)
     return render(request,
                   'imager_images/album_detail.html',
                   {'album': album_id})
