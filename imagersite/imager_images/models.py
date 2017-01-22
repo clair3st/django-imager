@@ -23,10 +23,10 @@ class Photo(models.Model):
     date_modified = models.DateField(auto_now_add=True)
     date_published = models.DateField(blank=True, null=True)
 
-    photographer = models.OneToOneField(UserProfile,
-                                        related_name='photo',
-                                        blank=True,
-                                        null=True)
+    photographer = models.ForeignKey(UserProfile,
+                                     related_name='photo',
+                                     blank=True,
+                                     null=True)
 
     published = models.CharField(max_length=255,
                                  choices=SHARING,
