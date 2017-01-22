@@ -22,7 +22,7 @@ class Photo(models.Model):
     date_modified = models.DateField(blank=True, null=True)
     date_published = models.DateField(blank=True, null=True)
 
-    photographer = models.OneToOneField(UserProfile,
+    photographer = models.ForeignKey(UserProfile,
                                         related_name='photo',
                                         blank=True,
                                         null=True)
