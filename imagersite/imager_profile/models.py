@@ -52,8 +52,8 @@ class UserProfile(models.Model):
                               choices=CAMERAS,
                               blank=True,
                               null=True)
-    address = models.TextField(blank=True, null=True)
-    bio = models.CharField(max_length=255, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
     website = models.URLField(blank=True)
     hireable = models.BooleanField(default=True)
     travel_radius = models.PositiveSmallIntegerField(default=5)
