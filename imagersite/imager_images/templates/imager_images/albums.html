@@ -1,29 +1,18 @@
 {% extends 'imagersite/layout.html' %}
 
-
 {% block body %}
 <div class="page-header">
-        <h1>Gallery</h1>
+        <h1>Published Albums</h1>
 </div>
 
 {% for album in albums %}
 
     <p><em>Title: </em>{{ album.title }}</p>
+    <p><em>Description: </em>{{ album.description}}</p>
     <p><em>Date Uploaded: </em>{{ album.date_uploaded}}</p>
 
     <p><em>Thumbnail: </em></p>
     <img style="width: 100px;" src="/media/{{album.cover_photo}}">
-
-{% endfor %}
-
-
-{% for photo in photos %}
-
-    <p><em>Title: </em>{{ photo.title }}</p>
-    <p><em>Date Uploaded: </em>{{ photo.date_uploaded}}</p>
-
-    <p><em>Thumbnail: </em></p>
-    <img style="width: 100px;" src="/media/{{photo.image}}">
 
 {% endfor %}
 

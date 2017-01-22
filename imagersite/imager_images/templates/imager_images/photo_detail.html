@@ -1,0 +1,17 @@
+{% extends 'imagersite/layout.html' %}
+
+
+{% block body %}
+<div class="page-header">
+        <h1>Photo Detail</h1>
+</div>
+
+    <p><em>Title: </em>{{ photo.title }}</p>
+    <p><em>Description: </em>{{ photo.description}}</p>
+    <p><em>Full size url: </em><a href="/media/{{photo.image}}">Link</a></p>
+    <p><em>Date Uploaded: </em>{{ photo.date_uploaded}}</p>
+
+    <p><em>Thumbnail: </em></p>
+    <img style="width: 100px;" src="/media/{{photo.image}}">
+
+{% endblock body %}

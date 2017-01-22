@@ -1,7 +1,7 @@
 """Urls for images/ routes."""
 
 from django.conf.urls import url
-from imager_profile.views import (
+from imager_images.views import (
     library_view,
     album_list,
     photo_list,
