@@ -10,7 +10,12 @@
 {% endblock stylesheets %}
 
 {% block content %}
+{% if photo.image_file %}
   <body style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/media/{{ photo.image_file }}')">
+{% else %}
+  <body style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url({% static 'imagersite/IMG_2790.jpg' %})">
+{% endif %}
+
   
     <div class="site-wrapper">
 
@@ -59,3 +64,4 @@
     </div>
 
     {% endblock %}
+}
