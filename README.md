@@ -1,4 +1,4 @@
-# django-imager
+# django-imager [![Build Status](https://travis-ci.org/clair3st/django-imager.svg?branch=front-end-1)](https://travis-ci.org/clair3st/django-imager)
  simple image management website using Django.
 
 **Authors:** Claire Gatenby and Colin Lamont
@@ -19,9 +19,9 @@ Once your environment has been activated, make sure to install Django and all of
 ```
 (django-imager) $ pip install -r requirements.pip
 ```
-Navigate to the project root, lending_library, and apply the migrations for the app.
+Navigate to the project root, django-imager, and apply the migrations for the app.
 ```
-(django-imager) $ cd lending_library
+(django-imager) $ cd django-imager
 (django-imager) $ ./manage.py migrate
 ```
 Finally, run the server in order to server the app on localhost
@@ -33,7 +33,9 @@ Django will typically serve on port 8000, unless you specify otherwise. You can 
 
 ##Current Models (outside of Django built-ins):
 
-This application allow users to store and organize photos. The `UserProfile` model contains:
+This application allow users to store and organize photos. 
+
+**The `UserProfile` model contains:**
 
 - What type of camera they have (Nikon, iPhone 7, Canon)
 - Address
@@ -49,11 +51,43 @@ The model also supports the following API:
 - ImagerProfile.active: provides full query functionality limited to profiles for users who are active (allowed to log in)
 - profile.is_active: a property which returns a boolean value indicating whether the user associated with the given profile is active
 
+**The `Photo` model contains:**
+
+- Image_file
+- Title
+- Description
+- Date Uploaded, Date Modified and Date Published
+- Photographer - linked to a UserProfile
+- Shared or Public
+
+**The `Album` model contains:**
+
+- Contents - Instance of Photo model
+- Title
+- Description
+- Date Uploaded, Date Modified and Date Published
+- Owner - linked to a UserProfile
+- Shared or Public
+- Cover Photo - Photo model
+
 
 ##Current URL Routes
-```
-/admin
-```
+
+- `/admin` Superuser admin page.
+- `/` Home page.
+- `/login` Login page.
+- `/logout` Logout route, no view.
+- `/accounts/register` Register a user form.
+- `/accounts/activate/complete/` Activation complete view.
+- `/accounts/register/complete/` Registration complete, email sent.
+- `/profile` Logged in user's profile view.
+- `/profile/<username>` Profile matching <username>.
+- `/images/albums` All public photos in imagersite database.
+- `/images/photos` All public albums in imagersite database.
+- `/images/library` Library of a users photos and albums.
+- `/images/albums/<id>` Detail view of album by <id>.
+- `/images/photos/<id>` Detail view of photo by <id>.
+
 
 
 ##Running Tests
