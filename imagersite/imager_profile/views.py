@@ -7,8 +7,10 @@ from imager_images.models import Photo, Album
 
 
 # Create your views here
-def profile_view(request, username):
+def profile_view(request, username=None):
     """Render profile view."""
+    if username is None:
+        username = request.user.username
     the_user = User.objects.get(username=username)
     profile = the_user.profile
 
