@@ -167,7 +167,7 @@ class ProfileFrontEndTests(TestCase):
         self.assertTrue(response.status_code == 200)
 
     def test_home_route_uses_right_templates(self):
-        """."""
+        """Test home route has the right templates."""
         response = self.client.get("/")
         self.assertTemplateUsed(response, "imagersite/base.html")
         self.assertTemplateUsed(response, "imagersite/home.html")
@@ -196,7 +196,7 @@ class ProfileFrontEndTests(TestCase):
             "password": 'wordpass'
         }, follow=True)
 
-        self.assertTrue(response.redirect_chain[0][0] == "/")
+        self.assertTrue(response.redirect_chain[0][0] == "/profile/")
 
     def test_login_route_redirects_home_page_no_login(self):
         """Test login route redirects to home page with no login link."""
