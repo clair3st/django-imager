@@ -6,9 +6,9 @@
 
         {% for photo in album.contents.all %}
 
-              <p><em>Title: </em>{{ photo.title }}</p>
-              <p><em>Description: </em>{{ photo.description}}</p>
-              <p><em>Thumbnail: </em></p>
+              <p><b>Title: </b>{{ photo.title }}</p>
+              <p><b>Description: </b>{{ photo.description}}</p>
+              <p><b>Thumbnail: </b></p>
               <img style="width: 100px;" src="/media/{{ photo.image_file }}">
 
         {% endfor %}

@@ -8,10 +8,10 @@
 
 {% for album in albums %}
 
-    <p><em>Title: </em>{{ album.title }}</p>
-    <p><em>Date Uploaded: </em>{{ album.date_uploaded}}</p>
+    <p><b>Title: </b>{{ album.title }}</p>
+    <p><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
 
-    <p><em>Thumbnail: </em></p>
+    <p><b>Thumbnail: </b></p>
     {% if album.cover_photo.image_file %}
     <img style="width: 100px;" src="/media/{{ album.cover_photo.image_file }}">
     {% else %}
@@ -23,10 +23,10 @@
 
 {% for photo in photos %}
 
-    <p><em>Title: </em>{{ photo.title }}</p>
-    <p><em>Date Uploaded: </em>{{ photo.date_uploaded}}</p>
+    <p><b>Title: </b>{{ photo.title }}</p>
+    <p><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
 
-    <p><em>Thumbnail: </em></p>
+    <p><b>Thumbnail: </b></p>
     <img style="width: 100px;" src="/media/{{ photo.image_file }}">
 
 {% endfor %}

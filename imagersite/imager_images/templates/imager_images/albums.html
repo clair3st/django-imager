@@ -7,12 +7,16 @@
 
 {% for album in albums %}
 
-    <p><em>Title: </em>{{ album.title }}</p>
-    <p><em>Description: </em>{{ album.description}}</p>
-    <p><em>Date Uploaded: </em>{{ album.date_uploaded}}</p>
+    <p><b>Title: </b>{{ album.title }}</p>
+    <p><b>Description: </b>{{ album.description}}</p>
+    <p><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
 
-    <p><em>Thumbnail: </em></p>
+    <p><b>Thumbnail: </b></p>
+    {% if album.cover_photo.image_file %}
     <img style="width: 100px;" src="/media/{{ album.cover_photo.image_file }}">
+    {% else %}
+    <img style="width: 100px;" src="{% static 'imagersite/IMG_2790.jpg' %}">
+    {% endif %}
 
 {% endfor %}
 
