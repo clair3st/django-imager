@@ -6,5 +6,7 @@ from imager_profile.views import (
 )
 
 urlpatterns = [
+    url(r'^$', profile_view, name='my_profile'),
+
     url(r'^(?P<username>\w+)/$', profile_view, name='profile')
 ]
