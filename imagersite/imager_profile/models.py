@@ -29,6 +29,7 @@ class UserProfile(models.Model):
         ('SONY', "Sony"),
         ('PANASONIC', "Panasonic"),
         ('PHONE', "Phone"),
+        ('', "---Camera Types---"),
     )
 
     STYLES = (
@@ -40,6 +41,7 @@ class UserProfile(models.Model):
         ('WILDLIFE', "Wildlife"),
         ('URBAN', "Urban"),
         ('TRAVEL', "Travel"),
+        ('', "---Photography Styles---"),
     )
 
     user = models.OneToOneField(
