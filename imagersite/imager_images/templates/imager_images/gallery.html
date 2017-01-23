@@ -12,7 +12,11 @@
     <p><em>Date Uploaded: </em>{{ album.date_uploaded}}</p>
 
     <p><em>Thumbnail: </em></p>
+    {% if album.cover_photo.image_file %}
     <img style="width: 100px;" src="/media/{{ album.cover_photo.image_file }}">
+    {% else %}
+    <img style="width: 100px;" src="{% static 'imagersite/IMG_2790.jpg' %}">
+    {% endif %}
 
 {% endfor %}
 
