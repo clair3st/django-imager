@@ -37,3 +37,7 @@ body > .container {
 code {
   font-size: 80%;
 }
+
+ul {
+  list-style-type: none;
+}

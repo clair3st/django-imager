@@ -1,16 +1,26 @@
 {% extends 'imagersite/layout.html' %}
 
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>{{ album.title }}</h1>
+            <ul class="unstyled">
 
-{% block body %}
-      <h3>{{ album.title }}</h3>
+                {% block body %}
+                <li>
 
-        {% for photo in album.contents.all %}
+                    {% for photo in album.contents.all %}
 
-              <p><b>Title: </b>{{ photo.title }}</p>
-              <p><b>Description: </b>{{ photo.description}}</p>
-              <p><b>Thumbnail: </b></p>
-              <img style="width: 100px;" src="/media/{{ photo.image_file }}">
+                    <p><b>Title: </b>{{ photo.title }}</p>
+                    <p><b>Description: </b>{{ photo.description}}</p>
+                    <p><b>Thumbnail: </b></p>
+                    <img style="width: 100px;" src="/media/{{ photo.image_file }}">
+                </li>
 
-        {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
   
 {% endblock %}

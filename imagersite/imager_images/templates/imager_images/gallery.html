@@ -1,35 +1,45 @@
 {% extends 'imagersite/layout.html' %}
+{% load staticfiles %}
 
 
 {% block body %}
-<div class="page-header">
-        <h1>Gallery</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Gallery</h1>
+            <ul class="unstyled">
+
+                {% for album in albums %}
+                <li>
+
+                    <p><b>Title: </b>{{ album.title }}</p>
+                    <p><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
+
+                    <p><b>Thumbnail: </b></p>
+                    {% if album.cover_photo.image_file %}
+                        <img style="width: 100px;" src="/media/{{ album.cover_photo.image_file }}">
+                    {% else %}
+                        <img style="width: 100px;" src="{% static 'imagersite/IMG_2790.jpg' %}">
+                    {% endif %}
+                </li>
+
+                {% endfor %}
+
+
+                {% for photo in photos %}
+                <li>
+
+                    <p><b>Title: </b>{{ photo.title }}</p>
+                    <p><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
+
+                    <p><b>Thumbnail: </b></p>
+                    <img style="width: 100px;" src="/media/{{ photo.image_file }}">
+                </li>
+
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </div>
-
-{% for album in albums %}
-
-    <p><b>Title: </b>{{ album.title }}</p>
-    <p><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
-
-    <p><b>Thumbnail: </b></p>
-    {% if album.cover_photo.image_file %}
-    <img style="width: 100px;" src="/media/{{ album.cover_photo.image_file }}">
-    {% else %}
-    <img style="width: 100px;" src="{% static 'imagersite/IMG_2790.jpg' %}">
-    {% endif %}
-
-{% endfor %}
-
-
-{% for photo in photos %}
-
-    <p><b>Title: </b>{{ photo.title }}</p>
-    <p><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
-
-    <p><b>Thumbnail: </b></p>
-    <img style="width: 100px;" src="/media/{{ photo.image_file }}">
-
-{% endfor %}
-
 
 {% endblock body %}
