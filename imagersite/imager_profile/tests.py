@@ -147,7 +147,7 @@ class UserTestCase(TestCase):
         self.assertTrue(self.users[0].profile.phone == "206-555-1212")
 
     def test_user_profile_str_method_returns_username(self):
-        """."""
+        """Test str method on user profile returns the username."""
         user = User.objects.first()
         self.assertTrue(str(user) == user.username)
 
