@@ -57,7 +57,7 @@ class Album(models.Model):
                                  blank=True,
                                  null=True)
 
-    cover_photo = models.OneToOneField(Photo,
-                                       related_name='cover',
-                                       blank=True,
-                                       null=True)
+    cover_photo = models.ForeignKey(Photo,
+                                    related_name='cover',
+                                    blank=True,
+                                    null=True)
