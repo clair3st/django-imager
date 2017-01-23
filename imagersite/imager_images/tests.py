@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from imager_images.models import Photo, Album
 import factory
 from django.test import Client, RequestFactory
+from django.urls import reverse_lazy
 
 # Create your tests here.
 
@@ -261,36 +262,36 @@ class ProfileFrontEndTests(TestCase):
     def test_album_list_view_status_ok(self):
         """Rendered html has staus 200, Unit Test."""
         from imager_images.views import album_list
-        req = self.request.get("/images/albums/")
+        req = self.request.get(reverse_lazy("album_list"))
         response = album_list(req)
         self.assertTrue(response.status_code == 200)
 
     def test_album_list_route_is_status_ok(self):
         """Funcional test for album list."""
-        response = self.client.get("/images/albums/")
+        response = self.client.get(reverse_lazy("album_list"))
         self.assertTrue(response.status_code == 200)
 
     def test_album_list_route_uses_right_templates(self):
         """Test Album list returns the right templates."""
-        response = self.client.get("/images/albums/")
+        response = self.client.get(reverse_lazy("album_list"))
         self.assertTemplateUsed(response, "imagersite/layout.html")
         self.assertTemplateUsed(response, "imager_images/albums.html")
 
     def test_photo_list_view_status_ok(self):
         """Rendered html has staus 200, Unit Test."""
         from imager_images.views import photo_list
-        req = self.request.get("/images/photos/")
+        req = self.request.get(reverse_lazy("photo_list"))
         response = photo_list(req)
         self.assertTrue(response.status_code == 200)
 
     def test_photo_list_route_is_status_ok(self):
         """Funcional test for photo list."""
-        response = self.client.get("/images/photos/")
+        response = self.client.get(reverse_lazy("photo_list"))
         self.assertTrue(response.status_code == 200)
 
     def test_photo_list_route_uses_right_templates(self):
         """Test photo view uses the correct templates."""
-        response = self.client.get("/images/photos/")
+        response = self.client.get(reverse_lazy("photo_list"))
         self.assertTemplateUsed(response, "imagersite/layout.html")
         self.assertTemplateUsed(response, "imager_images/photos.html")
 
@@ -350,7 +351,7 @@ class ProfileFrontEndTests(TestCase):
         from imager_images.views import library_view
         new_user = self.user_login()
         self.client.login(username=new_user.username, password='wordpass')
-        req = self.client.get("/images/library/")
+        req = self.client.get(reverse_lazy("library"))
         req.user = new_user
         response = library_view(req)
         self.assertTrue(response.status_code == 200)
@@ -359,7 +360,7 @@ class ProfileFrontEndTests(TestCase):
         """Funcional test for library."""
         new_user = self.user_login()
         self.client.login(username=new_user.username, password='wordpass')
-        response = self.client.get("/images/library/")
+        response = self.client.get(reverse_lazy("library"))
         response.user = new_user
         self.assertTrue(response.status_code == 200)
 
@@ -367,7 +368,7 @@ class ProfileFrontEndTests(TestCase):
         """Test library uses the correct templates."""
         new_user = self.user_login()
         self.client.login(username=new_user.username, password='wordpass')
-        response = self.client.get("/images/library/")
+        response = self.client.get(reverse_lazy("library"))
         response.user = new_user
         self.assertTemplateUsed(response, "imagersite/layout.html")
         self.assertTemplateUsed(response, "imager_images/gallery.html")
