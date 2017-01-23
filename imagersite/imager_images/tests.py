@@ -93,7 +93,7 @@ class UserTestCase(TestCase):
         this_album = self.albums[0]
         this_album.title = "My Album"
         this_album.save()
-        self.assertFalse(self.albums[0].contents)
+        self.assertTrue(self.albums[0].contents.count() == 0)
 
     def test_album_has_contents_with_one_photo(self):
         """Test album has one photo in its contents."""
@@ -108,19 +108,18 @@ class UserTestCase(TestCase):
 
     def test_album_has_contents_with_two_photos(self):
         """Test album has 2 photos within its contents."""
-        import pdb; pdb.set_trace()
         this_photo = self.photos[0]
         this_photo.title = "My Photo"
         this_photo.save()
-        next_photo = self.photos[0]
+        next_photo = self.photos[1]
         next_photo.title = "2nd Photo"
         next_photo.save()
         this_album = self.albums[0]
         this_album.title = "My Album"
-        this_album.contents.add = this_photo
-        this_album.contents.add = next_photo
+        this_album.contents.set([this_photo, next_photo])
         this_album.save()
-        self.assertTrue(len(self.albums.contents.count) == 2)
+
+        self.assertTrue(this_album.contents.count() == 2)
 
     def test_photo_has_image_file(self):
         """Test photo has an image file associated with it."""
