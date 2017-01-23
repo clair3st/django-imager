@@ -9,7 +9,7 @@ SHARING = (
     ('PRIVATE', "Private"),
     ('SHARED', "Shared"),
     ('PUBLIC', "Public"),
-    ('', "Select to share")
+    ('', "Select who can view")
 )
 
 
