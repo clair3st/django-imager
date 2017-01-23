@@ -8,9 +8,8 @@
 
               <p><em>Title: </em>{{ photo.title }}</p>
               <p><em>Description: </em>{{ photo.description}}</p>
-              <p><em>Full size url: </em><a href="/media/{{photo.image}}">Link</a></p>
               <p><em>Thumbnail: </em></p>
-              <img style="width: 100px;" src="/media/{{photo.image}}">
+              <img style="width: 100px;" src="/media/{{ photo.image_file }}">
 
         {% endfor %}
   

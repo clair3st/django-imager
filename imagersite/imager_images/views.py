@@ -28,7 +28,7 @@ def photo_list(request):
 
 def photo_detail(request, pk):
     """Show detail view of a photo."""
-    photo_id = Photo.objects.filter(id=pk)
+    photo_id = Photo.objects.get(pk=pk)
     return render(request,
                   'imager_images/photo_detail.html',
                   {'photo': photo_id})

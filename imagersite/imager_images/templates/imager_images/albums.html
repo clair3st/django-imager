@@ -12,7 +12,7 @@
     <p><em>Date Uploaded: </em>{{ album.date_uploaded}}</p>
 
     <p><em>Thumbnail: </em></p>
-    <img style="width: 100px;" src="/media/{{album.cover_photo}}">
+    <img style="width: 100px;" src="/media/{{ album.cover_photo.image_file }}">
 
 {% endfor %}
 
