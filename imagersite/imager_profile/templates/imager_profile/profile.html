@@ -6,30 +6,35 @@
         <h1>Profile</h1>
 </div>
  
-<p><em>Username:</em> {{ profile.user.username }}</p>
-<p><em>Name:</em> {{ profile.user.name }}</p>
-<p><em>Address:</em> {{ profile.address}}</p>
-<p><em>Phone:</em> {{ profile.phone}}</p>
-<p><em>Bio:</em> {{ profile.bio }}</p>
-<p><em>Camera:</em> {{ profile.camera }}</p>
-<p><em>Photography Style:</em> {{ profile.photo_type }}</p>
+<p><b>Username:</b> {{ profile.user.username }}</p>
+<p><b>Name:</b> {{ profile.user.name }}</p>
+<p><b>Address:</b> {{ profile.address}}</p>
+<p><b>Phone:</b> {{ profile.phone}}</p>
+<p><b>Bio:</b> {{ profile.bio }}</p>
+<p><b>Camera:</b> {{ profile.camera }}</p>
+<p><b>Photography Style:</b> {{ profile.photo_type }}</p>
 
 
-<p>Business Info</p>
-<p><em>Hireable:</em> {{ profile.hireable }}</p>
-<p><em>Willing to travel:</em> {{ profile.travel_radius }}</p>
-<p><em>Website:</em> {{ profile.website }}</p>
+<h3>Business Info</h3>
+<p><b>Hireable:</b> {{ profile.hireable }}</p>
+<p><b>Willing to travel:</b> {{ profile.travel_radius }}</p>
+<p><b>Website:</b> <a href="{{ profile.website }}">{{ profile.website }}</a></p>
 
-<p>Photos</p>
-    <p><em>Private:</em> {{ data.photos_private }}<p>
-    <p><em>Public:</em> {{ data.photo_published }}<p>
+<h3>Photos</h3>
+    {% if user == profile.user %}
+    <p><b>Private:</b> {{ data.photos_private }}<p>
+    {% endif %}
+    <p><b>Public:</b> {{ data.photo_published }}<p>
 
-<p>Albums</p>
-    <p><em>Private:</em> {{ data.album_private }}<p>
-    <p><em>Public:</em> {{ data.album_publised }}<p>
+<h3>Albums</h3>
+    {% if user == profile.user %}
+    <p><b>Private:</b> {{ data.album_private }}<p>
+    {% endif %}
+
+    <p><b>Public:</b> {{ data.album_publised }}<p>
 
 
-  <a href="/" class="btn btn-primary">Gallery</a>
+  <a href="{% url 'library' %}" class="btn btn-primary">Gallery</a>
 
 
 
