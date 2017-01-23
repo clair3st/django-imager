@@ -3,51 +3,55 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from imager_images.models import Photo, Album
 import factory
+from django.test import Client, RequestFactory
 
 # Create your tests here.
+
+
+class UserFactory(factory.django.DjangoModelFactory):
+    """Create test instance of User Class."""
+
+    class Meta:
+        """Invoke user instance using User model class."""
+
+        model = User
+
+    username = factory.Sequence(lambda n: "Photographer {}".format(n))
+    email = factory.LazyAttribute(
+        lambda x: "{}@theshot.com".format(x.username.replace(" ", ""))
+    )
+
+
+class PhotoFactory(factory.django.DjangoModelFactory):
+    """Create test instance of Photo Class."""
+
+    class Meta:
+        """Invoke photo instance using Photo model class."""
+
+        model = Photo
+
+    title = factory.Sequence(lambda n: "Photo{}".format(n))
+
+
+class AlbumFactory(factory.django.DjangoModelFactory):
+    """Create test instance of Album."""
+
+    class Meta:
+        """Invoke Album instance using Album model class."""
+
+        model = Album
+
+    title = factory.Sequence(lambda n: "Album{}".format(n))
 
 
 class UserTestCase(TestCase):
     """The User Model test class."""
 
-    class UserFactory(factory.django.DjangoModelFactory):
-        """Create test instance of User Class."""
-
-        class Meta:
-            """Invoke user instance using User model class."""
-
-            model = User
-
-        username = factory.Sequence(lambda n: "Photographer {}".format(n))
-        email = factory.LazyAttribute(
-            lambda x: "{}@theshot.com".format(x.username.replace(" ", ""))
-        )
-
-    class PhotoFactory(factory.django.DjangoModelFactory):
-        """Create test instance of Photo Class."""
-
-        class Meta:
-            """Invoke photo instance using Photo model class."""
-
-            model = Photo
-
-        title = factory.Sequence(lambda n: "Photo{}".format(n))
-
-    class AlbumFactory(factory.django.DjangoModelFactory):
-        """Create test instance of Album."""
-
-        class Meta:
-            """Invoke Album instance using Album model class."""
-
-            model = Album
-
-        title = factory.Sequence(lambda n: "Album{}".format(n))
-
     def setUp(self):
         """The setup and buildout for uses, photos, and albums."""
-        self.users = [self.UserFactory.create() for i in range(20)]
-        self.photos = [self.PhotoFactory.create() for i in range(20)]
-        self.albums = [self.AlbumFactory.create() for i in range(20)]
+        self.users = [UserFactory.create() for i in range(20)]
+        self.photos = [PhotoFactory.create() for i in range(20)]
+        self.albums = [AlbumFactory.create() for i in range(20)]
 
     def test_photo_exists(self):
         """Test existance of a photo."""
@@ -240,3 +244,130 @@ class UserTestCase(TestCase):
         this_album.published = "PUBLIC"
         this_album.save()
         self.assertTrue(self.albums[0].published == "PUBLIC")
+
+
+class ProfileFrontEndTests(TestCase):
+    """Functional and Unit tests for front end views."""
+
+    def setUp(self):
+        """Test up dummy."""
+        self.client = Client()
+        self.request = RequestFactory()
+
+        self.users = [UserFactory.create() for i in range(5)]
+        self.photos = [PhotoFactory.create() for i in range(5)]
+        self.albums = [AlbumFactory.create() for i in range(5)]
+
+    def test_album_list_view_status_ok(self):
+        """Rendered html has staus 200, Unit Test."""
+        from imager_images.views import album_list
+        req = self.request.get("/images/albums/")
+        response = album_list(req)
+        self.assertTrue(response.status_code == 200)
+
+    def test_album_list_route_is_status_ok(self):
+        """Funcional test for album list."""
+        response = self.client.get("/images/albums/")
+        self.assertTrue(response.status_code == 200)
+
+    def test_album_list_route_uses_right_templates(self):
+        """Test Album list returns the right templates."""
+        response = self.client.get("/images/albums/")
+        self.assertTemplateUsed(response, "imagersite/layout.html")
+        self.assertTemplateUsed(response, "imager_images/albums.html")
+
+    def test_photo_list_view_status_ok(self):
+        """Rendered html has staus 200, Unit Test."""
+        from imager_images.views import photo_list
+        req = self.request.get("/images/photos/")
+        response = photo_list(req)
+        self.assertTrue(response.status_code == 200)
+
+    def test_photo_list_route_is_status_ok(self):
+        """Funcional test for photo list."""
+        response = self.client.get("/images/photos/")
+        self.assertTrue(response.status_code == 200)
+
+    def test_photo_list_route_uses_right_templates(self):
+        """Test photo view uses the correct templates."""
+        response = self.client.get("/images/photos/")
+        self.assertTemplateUsed(response, "imagersite/layout.html")
+        self.assertTemplateUsed(response, "imager_images/photos.html")
+
+    def test_album_detail_view_status_ok(self):
+        """Rendered html has staus 200, Unit Test."""
+        from imager_images.views import album_detail
+        req = self.request.get("/images/albums/11")
+        album = self.albums[0]
+        album.contents = self.photos
+        response = album_detail(req, 11)
+        self.assertTrue(response.status_code == 200)
+
+    def test_album_detail_route_is_status_ok(self):
+        """Funcional test for album detail."""
+        album = self.albums[0]
+        response = self.client.get("/images/albums/" + str(album.pk))
+        self.assertTrue(response.status_code == 200)
+
+    def test_album_detail_route_uses_right_templates(self):
+        """Test album detail uses the correct templates."""
+        album = self.albums[0]
+        response = self.client.get("/images/albums/" + str(album.pk))
+        self.assertTemplateUsed(response, "imagersite/layout.html")
+        self.assertTemplateUsed(response, "imager_images/album_detail.html")
+
+    def test_photo_detail_view_status_ok(self):
+        """Rendered html has staus 200, Unit Test."""
+        from imager_images.views import photo_detail
+        photo = self.photos[0]
+        req = self.request.get("/images/photos/" + str(photo.pk))
+        response = photo_detail(req, photo.pk)
+        self.assertTrue(response.status_code == 200)
+
+    def test_photo_detail_route_is_status_ok(self):
+        """Funcional test for photo detail."""
+        photo = self.photos[0]
+        response = self.client.get("/images/photos/" + str(photo.pk))
+        self.assertTrue(response.status_code == 200)
+
+    def test_photo_detail_route_uses_right_templates(self):
+        """Test photo detail uses the correct templates."""
+        photo = self.photos[0]
+        response = self.client.get("/images/photos/" + str(photo.pk))
+        self.assertTemplateUsed(response, "imagersite/layout.html")
+        self.assertTemplateUsed(response, "imager_images/photo_detail.html")
+
+    def user_login(self):
+        """New User login."""
+        new_user = UserFactory.create()
+        new_user.username = 'foo-bar'
+        new_user.set_password('wordpass')
+        new_user.save()
+        return new_user
+
+    def test_library_view_status_ok(self):
+        """Rendered html has staus 200, Unit Test."""
+        from imager_images.views import library_view
+        new_user = self.user_login()
+        self.client.login(username=new_user.username, password='wordpass')
+        req = self.client.get("/images/library/")
+        req.user = new_user
+        response = library_view(req)
+        self.assertTrue(response.status_code == 200)
+
+    def test_library_route_is_status_ok(self):
+        """Funcional test for library."""
+        new_user = self.user_login()
+        self.client.login(username=new_user.username, password='wordpass')
+        response = self.client.get("/images/library/")
+        response.user = new_user
+        self.assertTrue(response.status_code == 200)
+
+    def test_library_route_uses_right_templates(self):
+        """Test library uses the correct templates."""
+        new_user = self.user_login()
+        self.client.login(username=new_user.username, password='wordpass')
+        response = self.client.get("/images/library/")
+        response.user = new_user
+        self.assertTemplateUsed(response, "imagersite/layout.html")
+        self.assertTemplateUsed(response, "imager_images/gallery.html")
