@@ -15,8 +15,8 @@ a:hover {
 .btn-default:focus {
   color: #333;
   text-shadow: none; /* Prevent inheritance from `body` */
-  background-color: #fff;
-  border: 1px solid #fff;
+  background-color: #f37673;
+  border: 1px solid #f37673;
 }
 
 
@@ -27,19 +27,20 @@ a:hover {
 html,
 body {
   height: 100%;
-  background-color: #333;
 }
 body {
   color: #fff;
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
-  background-image:
-  linear-gradient(rgba(0, 0, 0, 0.3),
-      rgba(0, 0, 0, 0.3)), url('IMG_2790.jpg');
+  
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
 
+}
+
+.masthead-brand {
+  color: #f37673;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -99,7 +100,7 @@ body {
 .masthead-nav > .active > a:hover,
 .masthead-nav > .active > a:focus {
   color: #fff;
-  border-bottom-color: #fff;
+  border-bottom-color: #f37673;
 }
 
 @media (min-width: 768px) {
