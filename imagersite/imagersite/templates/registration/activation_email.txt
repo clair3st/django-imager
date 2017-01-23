@@ -1,0 +1,7 @@
+Thanks for joining IMAGE-nation!
+
+To activate your account, please visit the following page:
+
+http://{{ site }}{% url 'registration_activate' activation_key %}
+
+This page will expire in {{ expiration_days }} days.
