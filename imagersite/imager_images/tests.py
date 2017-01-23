@@ -42,7 +42,9 @@ class AlbumFactory(factory.django.DjangoModelFactory):
 
         model = Album
 
-    title = factory.Sequence(lambda n: "Album{}".format(n))
+    description = factory.Sequence(lambda n: "Album{}".format(n))
+    # cover_photo = SimpleUploadFile(name'test_image.jpg', content=open(IMG_PATH, 'rb').read(), content_type='image/jpeg'))
+    title = "Some Image"
 
 
 class UserTestCase(TestCase):
@@ -372,3 +374,19 @@ class ProfileFrontEndTests(TestCase):
         response.user = new_user
         self.assertTemplateUsed(response, "imagersite/layout.html")
         self.assertTemplateUsed(response, "imager_images/gallery.html")
+
+    def test_logged_in_user_sees_their_gallery(self):
+        """A logged in user can view their own library."""
+        user = UserFactory.create()
+        user.save()
+
+        for album in self.albums:
+            user.profile.albums.add(album)
+
+        self.client.force_login(user)
+
+        response = self.client.get(reverse_lazy("library"))
+
+        # html = soup(response.content, "htmllib5")
+
+        self.assertTrue("Some Image" in str(response.content))
