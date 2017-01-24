@@ -162,9 +162,10 @@ class ProfileFrontEndTests(TestCase):
 
     def test_home_view_status_ok(self):
         """Rendered html has staus 200, Unit Test."""
-        from imagersite.views import home_view
-        req = self.request.get("/potato")
-        response = home_view(req)
+        from imagersite.views import HomeView
+        req = self.request.get("/")
+        view = HomeView.as_view()
+        response = view(req)
         self.assertTrue(response.status_code == 200)
 
     def test_home_route_is_status_ok(self):
