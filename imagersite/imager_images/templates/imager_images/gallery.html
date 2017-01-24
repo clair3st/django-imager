@@ -10,7 +10,7 @@
             <ul class="unstyled">
 
                 {% for album in albums %}
-                <li>
+                <li class="col-sm-4">
 
                     <p><b>Title: </b>{{ album.title }}</p>
                     <p><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
@@ -27,7 +27,7 @@
 
 
                 {% for photo in photos %}
-                <li>
+                <li class="col-sm-4">
 
                     <p><b>Title: </b>{{ photo.title }}</p>
                     <p><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
