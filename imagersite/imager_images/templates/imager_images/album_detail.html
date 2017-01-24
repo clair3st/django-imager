@@ -7,10 +7,10 @@
             <ul class="unstyled">
 
                 {% block body %}
-                <li>
 
                     {% for photo in album.contents.all %}
 
+                <li class="col-sm-4">
                     <p><b>Title: </b>{{ photo.title }}</p>
                     <p><b>Description: </b>{{ photo.description}}</p>
                     <p><b>Thumbnail: </b></p>
