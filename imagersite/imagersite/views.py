@@ -1,16 +1,21 @@
 """View for website."""
 from imager_images.models import Photo
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
 
-def home_view(request):
-    """Home view callable, for the home page."""
-    import random
-    all_imgs = Photo.objects.filter(published="PUBLIC")
+class HomeView(TemplateView):
+    """Class based view for home page."""
 
-    try:
-        random_img = random.choice(all_imgs)
-    except IndexError:
-        random_img = None
+    template_name = "imagersite/home.html"
 
-    return render(request, "imagersite/home.html", {'photo': random_img})
+    def get_context_data(self):
+        """Filter db for a random background."""
+        import random
+        all_imgs = Photo.objects.filter(published="PUBLIC")
+
+        try:
+            random_img = random.choice(all_imgs)
+        except IndexError:
+            random_img = None
+
+        return {'photo': random_img}
