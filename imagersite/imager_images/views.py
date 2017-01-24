@@ -2,6 +2,7 @@
 
 from django.shortcuts import render
 from imager_images.models import Photo, Album
+from django.views.generic import TemplateView
 
 
 def library_view(request):
@@ -20,10 +21,28 @@ def album_list(request):
     return render(request, 'imager_images/albums.html', {'albums': albums})
 
 
-def photo_list(request):
-    """Show a list of all public photos."""
-    photos = Photo.objects.filter(published="PUBLIC")
-    return render(request, 'imager_images/photos.html', {'photos': photos})
+class AlbumList(TemplateView):
+    """Class based view for Album list."""
+
+    template_name = "imager_images/albums.html"
+
+    def get_context_data(self):
+        """Filter db for public albums."""
+        albums = Album.objects.filter(published="PUBLIC")
+        context = {'albums': albums}
+        return context
+
+
+class PhotoList(TemplateView):
+    """Class based view for Photo list."""
+
+    template_name = "imager_images/photos.html"
+
+    def get_context_data(self):
+        """Filter db for public photos."""
+        photos = Photo.objects.filter(published="PUBLIC")
+        context = {'photos': photos}
+        return context
 
 
 def photo_detail(request, pk):
