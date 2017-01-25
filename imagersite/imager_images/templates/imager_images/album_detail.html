@@ -11,10 +11,9 @@
                 {% for photo in album.contents.all %}
 
                 <li class="col-sm-4">
+                    <img style="width: 100px;" src="/media/{{ photo.image_file }}">
                     <p><b>Title: </b>{{ photo.title }}</p>
                     <p><b>Description: </b>{{ photo.description}}</p>
-                    <p><b>Thumbnail: </b></p>
-                    <img style="width: 100px;" src="/media/{{ photo.image_file }}">
                 </li>
 
                 {% endfor %}

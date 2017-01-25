@@ -15,7 +15,6 @@
                     <p><b>Title: </b>{{ album.title }}</p>
                     <p><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
 
-                    <p><b>Thumbnail: </b></p>
                     {% if album.cover_photo.image_file %}
                         <img style="width: 100px;" src="/media/{{ album.cover_photo.image_file }}">
                     {% else %}
@@ -29,11 +28,9 @@
                 {% for photo in photos %}
                 <li class="col-sm-4">
 
+                    <img style="width: 100px;" src="/media/{{ photo.image_file }}">
                     <p><b>Title: </b>{{ photo.title }}</p>
                     <p><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
-
-                    <p><b>Thumbnail: </b></p>
-                    <img style="width: 100px;" src="/media/{{ photo.image_file }}">
                 </li>
 
                 {% endfor %}
