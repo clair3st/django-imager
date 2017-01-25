@@ -1,13 +1,17 @@
 """Views for imager_images."""
 
 from imager_images.models import Photo, Album
-from django.views.generic import TemplateView
+from django.views.generic import ListView, DetailView
 
 
-class LibraryView(TemplateView):
+class LibraryView(ListView):
     """Class based view for Library."""
 
     template_name = 'imager_images/gallery.html'
+
+    def get_queryset(self):
+        """Get public albums."""
+        return {}
 
     def get_context_data(self):
         """Show a users galleries and photos."""
@@ -18,49 +22,39 @@ class LibraryView(TemplateView):
         return context
 
 
-class AlbumList(TemplateView):
+class AlbumList(ListView):
     """Class based view for Album list."""
 
     template_name = "imager_images/albums.html"
+    model = Album
+    context_object_name = 'albums'
 
-    def get_context_data(self):
-        """Filter db for public albums."""
-        albums = Album.objects.filter(published="PUBLIC")
-        context = {'albums': albums}
-        return context
+    def get_queryset(self):
+        """Get public albums."""
+        return Album.objects.filter(published="PUBLIC")
 
 
-class PhotoList(TemplateView):
+class PhotoList(ListView):
     """Class based view for Photo list."""
 
     template_name = "imager_images/photos.html"
+    model = Photo
+    context_object_name = 'photos'
 
-    def get_context_data(self):
-        """Filter db for public photos."""
-        photos = Photo.objects.filter(published="PUBLIC")
-        context = {'photos': photos}
-        return context
+    def get_queryset(self):
+        """Get public photos."""
+        return Photo.objects.filter(published="PUBLIC")
 
 
-class PhotoDetail(TemplateView):
+class PhotoDetail(DetailView):
     """Class based view for Photo Detail."""
 
     template_name = "imager_images/photo_detail.html"
-
-    def get_context_data(self, pk):
-        """Show detail view of photo."""
-        photo_id = Photo.objects.get(pk=pk)
-        context = {'photos': photo_id}
-        return context
+    model = Photo
 
 
-class AlbumDetail(TemplateView):
+class AlbumDetail(DetailView):
     """Class based view for Album detail."""
 
-    template_name = "imager_images/album_detail.html"
-
-    def get_context_data(self, pk):
-        """Show a list of all photos in an album."""
-        album_id = Album.objects.filter(pk=pk)
-        context = {'photos': album_id}
-        return context
+    template_name = 'imager_images/album_detail.html'
+    model = Album
