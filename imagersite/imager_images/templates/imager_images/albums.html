@@ -17,9 +17,9 @@
                         <img style="width: 100px;" src="{% static 'imagersite/IMG_2790.jpg' %}">
                     {% endif %}
                     </a>
-                    <p><b>Title: </b>{{ album.title }}</p>
-                    <p><b>Description: </b>{{ album.description}}</p>
-                    <p><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
+                    <p id="th-title"><b>{{ album.title }}</b></p>
+                    <p>{{ album.description}}</p>
+                    <p class="date"><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
                 </li>
 
 {% endfor %}

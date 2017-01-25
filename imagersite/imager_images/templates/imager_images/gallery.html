@@ -5,10 +5,16 @@
 {% block body %}
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
+        <div class='page-header'>
+            <div class='btn-toolbar pull-right'>
+                <div class='btn-group'>
+                    <a href="{% url 'photo_add' %}" class="btn btn-primary">Add Photo</a>
+                    <a href="{% url 'album_add' %}" class="btn btn-primary">Add Album</a>
+                </div>
+            </div>
             <h1>Gallery</h1>
-            <a href="{% url 'photo_add' %}" class="btn btn-primary">Add Photo</a>
-            <a href="{% url 'album_add' %}" class="btn btn-primary">Add Album</a>
+        </div>
+            
             <ul class="unstyled">
 
                 {% for album in albums %}
@@ -20,8 +26,8 @@
                         <img style="width: 100px;" src="{% static 'imagersite/IMG_2790.jpg' %}">
                     {% endif %}
                     </a>
-                    <p><b>Title: </b>{{ album.title }}</p>
-                    <p><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
+                    <p id="th-title"><b>{{ album.title }}</b></p>
+                    <p class="date"><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
                 </li>
 
                 {% endfor %}
@@ -31,8 +37,8 @@
                 <li class="col-sm-4">
                 <a href="{% url 'photo_detail' photo.id %}">
                     <img style="width: 100px;" src="/media/{{ photo.image_file }}"></a>
-                    <p><b>Title: </b>{{ photo.title }}</p>
-                    <p><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
+                    <p id="th-title"><b>{{ photo.title }}</b></p>
+                    <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
                 </li>
 
                 {% endfor %}

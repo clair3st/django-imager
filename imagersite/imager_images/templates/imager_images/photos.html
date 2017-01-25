@@ -13,9 +13,9 @@
                     <a href="{% url 'photo_detail' photo.id %}">
                     <img style="width: 100px;" src="/media/{{ photo.image_file }}">
                     </a>
-                    <p><b>Title: </b>{{ photo.title }}</p>
-                    <p><b>Description: </b>{{ photo.description}}</p>
-                    <p><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
+                    <p id="th-title"><b>{{ photo.title }}</b></p>
+                    <p>{{ photo.description}}</p>
+                    <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
                 </li>
     
 {% endfor %}
