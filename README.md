@@ -87,6 +87,8 @@ The model also supports the following API:
 - `/images/library` Library of a users photos and albums.
 - `/images/albums/<id>` Detail view of album by <id>.
 - `/images/photos/<id>` Detail view of photo by <id>.
+- `/images/albums/add/` Add a new album.
+- `/images/photos/add/` Add a new photo.
 
 
 

@@ -304,7 +304,7 @@ class ProfileFrontEndTests(TestCase):
         album = self.albums[0]
         album.contents = self.photos
         view = AlbumDetail.as_view()
-        response = view(req, pk=11)
+        response = view(req, pk=album.pk)
         self.assertTrue(response.status_code == 200)
 
     def test_album_detail_route_is_status_ok(self):
@@ -391,6 +391,51 @@ class ProfileFrontEndTests(TestCase):
 
         response = self.client.get(reverse_lazy("library"))
 
-        # html = soup(response.content, "htmllib5")
-
         self.assertTrue("Some Image" in str(response.content))
+
+    def test_album_add_view_status_ok(self):
+        """Rendered html has staus 200, Unit Test."""
+        from imager_images.views import AlbumAdd
+        req = self.request.get(reverse_lazy("album_add"))
+        view = AlbumAdd.as_view()
+        response = view(req)
+        self.assertTrue(response.status_code == 200)
+
+    def test_album_add_route_is_status_ok(self):
+        """Funcional test for album add."""
+        response = self.client.get(reverse_lazy("album_add"))
+        self.assertTrue(response.status_code == 200)
+
+    def test_album_add_route_uses_right_templates(self):
+        """Test Album add returns the right templates."""
+        response = self.client.get(reverse_lazy("album_add"))
+        self.assertTemplateUsed(response, "imagersite/layout.html")
+        self.assertTemplateUsed(response, "imager_images/create.html")
+
+    def test_photo_add_view_status_ok(self):
+        """Rendered html has staus 200, Unit Test."""
+        from imager_images.views import PhotoAdd
+        req = self.request.get(reverse_lazy("photo_add"))
+        view = PhotoAdd.as_view()
+        response = view(req)
+        self.assertTrue(response.status_code == 200)
+
+    def test_photo_add_route_is_status_ok(self):
+        """Funcional test for photo add."""
+        response = self.client.get(reverse_lazy("photo_add"))
+        self.assertTrue(response.status_code == 200)
+
+    def test_photo_add_route_uses_right_templates(self):
+        """Test Album add returns the right templates."""
+        response = self.client.get(reverse_lazy("photo_add"))
+        self.assertTemplateUsed(response, "imagersite/layout.html")
+        self.assertTemplateUsed(response, "imager_images/create.html")
+
+    def test_logged_in_user_sees_add_photo_gallery(self):
+        """A logged in user can view their own library."""
+        user = self.user_login()
+        self.client.force_login(user)
+
+        response = self.client.get(reverse_lazy("library"))
+
+        self.assertTrue("Add Photo" and "Add Album" in str(response.content))
