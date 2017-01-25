@@ -2,7 +2,7 @@
 
 from imager_images.models import Photo, Album
 from django.views.generic import ListView, DetailView, CreateView
-
+from django.urls import reverse_lazy
 
 class LibraryView(ListView):
     """Class based view for Library."""
@@ -21,13 +21,14 @@ class LibraryView(ListView):
         context = {'albums': user_albums, 'photos': user_photos}
         return context
 
+
 class AlbumAdd(CreateView):
     """Class based view for adding an album."""
 
     template_name = "imager_images/create.html"
     model = Album
     fields = ['owner', 'contents', 'title', 'description', 'published', 'cover_photo']
-
+    success_url = reverse_lazy("library")
 
 class PhotoAdd(CreateView):
     """Class based view for adding a photo."""
@@ -35,7 +36,7 @@ class PhotoAdd(CreateView):
     template_name = "imager_images/create.html"
     model = Photo
     fields = ['image_file', 'title', 'description', 'photographer', 'published']
-
+    success_url = reverse_lazy("library")
 
 class AlbumList(ListView):
     """Class based view for Album list."""

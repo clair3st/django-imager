@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='album',
             name='date_modified',
-            field=models.DateField(auto_now_add=True, default='01-24-2017'),
+            field=models.DateField(auto_now_add=True, default='2017-01-24'),
             preserve_default=False,
         ),
         migrations.AlterField(
