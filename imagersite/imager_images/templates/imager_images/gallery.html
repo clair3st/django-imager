@@ -12,14 +12,14 @@
                 {% for album in albums %}
                 <li class="col-sm-4">
 
-                    <p><b>Title: </b>{{ album.title }}</p>
-                    <p><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
-
                     {% if album.cover_photo.image_file %}
                         <img style="width: 100px;" src="/media/{{ album.cover_photo.image_file }}">
                     {% else %}
                         <img style="width: 100px;" src="{% static 'imagersite/IMG_2790.jpg' %}">
                     {% endif %}
+
+                    <p><b>Title: </b>{{ album.title }}</p>
+                    <p><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
                 </li>
 
                 {% endfor %}

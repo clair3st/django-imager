@@ -1,0 +1,12 @@
+{% extends 'imagersite/layout.html' %}
+
+{% block body %}
+<div class="page-header">
+        <h1>Create</h1>
+      </div>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary" value="Save">Save</button>
+  </form>
+{% endblock body %}

@@ -1,7 +1,7 @@
 """Views for imager_images."""
 
 from imager_images.models import Photo, Album
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 
 
 class LibraryView(ListView):
@@ -20,6 +20,21 @@ class LibraryView(ListView):
         user_albums = Album.objects.filter(owner=the_user.profile)
         context = {'albums': user_albums, 'photos': user_photos}
         return context
+
+class AlbumAdd(CreateView):
+    """Class based view for adding an album."""
+
+    template_name = "imager_images/create.html"
+    model = Album
+    fields = ['owner', 'contents', 'title', 'description', 'published', 'cover_photo']
+
+
+class PhotoAdd(CreateView):
+    """Class based view for adding a photo."""
+
+    template_name = "imager_images/create.html"
+    model = Photo
+    fields = ['image_file', 'title', 'description', 'photographer', 'published']
 
 
 class AlbumList(ListView):
