@@ -1,17 +1,14 @@
 """Views for imager_images."""
 
 from imager_images.models import Photo, Album
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.urls import reverse_lazy
 
-class LibraryView(ListView):
+
+class LibraryView(TemplateView):
     """Class based view for Library."""
 
     template_name = 'imager_images/gallery.html'
-
-    def get_queryset(self):
-        """Get public albums."""
-        return {}
 
     def get_context_data(self):
         """Show a users galleries and photos."""
@@ -27,16 +24,27 @@ class AlbumAdd(CreateView):
 
     template_name = "imager_images/create.html"
     model = Album
-    fields = ['owner', 'contents', 'title', 'description', 'published', 'cover_photo']
+    fields = ['owner',
+              'contents',
+              'title',
+              'description',
+              'published',
+              'cover_photo']
     success_url = reverse_lazy("library")
+
 
 class PhotoAdd(CreateView):
     """Class based view for adding a photo."""
 
     template_name = "imager_images/create.html"
     model = Photo
-    fields = ['image_file', 'title', 'description', 'photographer', 'published']
+    fields = ['image_file',
+              'title',
+              'description',
+              'photographer',
+              'published']
     success_url = reverse_lazy("library")
+
 
 class AlbumList(ListView):
     """Class based view for Album list."""
