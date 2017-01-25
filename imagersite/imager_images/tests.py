@@ -5,7 +5,7 @@ from imager_images.models import Photo, Album
 import factory
 from django.test import Client, RequestFactory
 from django.urls import reverse_lazy
-
+import datetime
 # Create your tests here.
 
 
@@ -156,9 +156,8 @@ class UserTestCase(TestCase):
         """Test photo has a date modified."""
         this_photo = self.photos[0]
         this_photo.title = "My Photo"
-        this_photo.date_modified = "2017-01-23"
         this_photo.save()
-        self.assertTrue(self.photos[0].date_modified == "2017-01-23")
+        self.assertTrue(self.photos[0].date_modified == datetime.date.today())
 
     def test_photo_has_date_published(self):
         """Test photo has a date published."""
@@ -212,9 +211,8 @@ class UserTestCase(TestCase):
         """Test album has a date modified."""
         this_album = self.albums[0]
         this_album.title = "My Photo Album"
-        this_album.date_modified = "2017-01-23"
         this_album.save()
-        self.assertTrue(self.albums[0].date_modified == "2017-01-23")
+        self.assertTrue(self.albums[0].date_modified == datetime.date.today())
 
     def test_album_has_date_published(self):
         """Test album has a date published."""
