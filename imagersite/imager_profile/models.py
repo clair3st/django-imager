@@ -22,6 +22,7 @@ class UserProfile(models.Model):
     """The library patron and all of its attributes."""
 
     CAMERAS = (
+
         ('CANON', "Canon"),
         ('NIKON', "Nikon"),
         ('OLYMPUS', "Olympus"),
