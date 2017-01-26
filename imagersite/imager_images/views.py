@@ -49,7 +49,7 @@ class PhotoAdd(CreateView):
 class AlbumEdit(UpdateView):
     """Class based view for editing an album."""
 
-    template_name = "imager_images/create.html"
+    template_name = "imager_images/update.html"
     model = Album
     fields = ['owner',
               'contents',
@@ -59,10 +59,11 @@ class AlbumEdit(UpdateView):
               'cover_photo']
     success_url = reverse_lazy("library")
 
+
 class PhotoEdit(UpdateView):
     """Class based view for editing a photo."""
 
-    template_name = "imager_images/create.html"
+    template_name = "imager_images/update.html"
     model = Photo
     fields = ['image_file',
               'title',
@@ -70,6 +71,7 @@ class PhotoEdit(UpdateView):
               'photographer',
               'published']
     success_url = reverse_lazy("library")
+
 
 class AlbumList(ListView):
     """Class based view for Album list."""
