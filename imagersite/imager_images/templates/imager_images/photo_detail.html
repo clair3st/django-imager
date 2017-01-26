@@ -6,12 +6,10 @@
         <h1>Photo Detail</h1>
 </div>
 
-    <p><b>Title: </b>{{ photo.title }}</p>
-    <p><b>Description: </b>{{ photo.description}}</p>
-    <p><b>Full size url: </b><a href="/media/{{ photo.image_file }}">Link</a></p>
-    <p><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
-
-    <p><b>Thumbnail: </b></p>
     <img style="width: 100px;" src="/media/{{ photo.image_file }}">
+    <p id="th-title"><b>{{ photo.title }}</b></p>
+    <p>{{ photo.description}}</p>
+    <p><b>Full size url: </b><a href="/media/{{ photo.image_file }}">Link</a></p>
+    <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
 
 {% endblock body %}

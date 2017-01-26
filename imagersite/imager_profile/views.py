@@ -1,30 +1,30 @@
 """Views for imager profile."""
 
-from django.shortcuts import render
-# from imager_profile.models import UserProfile
 from django.contrib.auth.models import User
 from imager_images.models import Photo, Album
+from django.views.generic import TemplateView
 
 
-# Create your views here
-def profile_view(request, username=None):
-    """Render profile view."""
-    if username is None:
-        username = request.user.username
-    the_user = User.objects.get(username=username)
-    profile = the_user.profile
+class ProfileView(TemplateView):
+    """Class based view for Profile page."""
 
-    photo_data = Photo.objects.filter(photographer=the_user.profile)
+    template_name = 'imager_profile/profile.html'
 
-    album_data = Album.objects.filter(owner=the_user.profile)
+    def get_context_data(self, username=None):
+        """Filter db for users data."""
+        if username is None:
+            username = self.request.user.username
+        the_user = User.objects.get(username=username)
+        profile = the_user.profile
 
-    data = {
-        'photo_published': photo_data.filter(published="PUBLIC").count(),
-        'photo_private': photo_data.filter(published="PRIVATE").count(),
-        'album_published': album_data.filter(published="PUBLIC").count(),
-        'album_private': album_data.filter(published="PRIVATE").count()
-    }
+        photo_data = Photo.objects.filter(photographer=the_user.profile)
 
-    return render(request,
-                  'imager_profile/profile.html',
-                  {'profile': profile, 'data': data})
+        album_data = Album.objects.filter(owner=the_user.profile)
+
+        data = {
+            'photo_published': photo_data.filter(published="PUBLIC").count(),
+            'photo_private': photo_data.filter(published="PRIVATE").count(),
+            'album_published': album_data.filter(published="PUBLIC").count(),
+            'album_private': album_data.filter(published="PRIVATE").count()
+        }
+        return {'profile': profile, 'data': data}

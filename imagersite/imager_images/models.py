@@ -22,8 +22,8 @@ class Photo(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     description = models.CharField(max_length=255, blank=True, null=True)
     date_uploaded = models.DateField(auto_now_add=True)
-    date_modified = models.DateField(auto_now_add=True)
-    date_published = models.DateField(blank=True, null=True)
+    date_modified = models.DateField(auto_now=True)
+    date_published = models.DateField(auto_now_add=True)
 
     photographer = models.ForeignKey(UserProfile,
                                      related_name='photo',
@@ -50,8 +50,8 @@ class Album(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     description = models.CharField(max_length=255, blank=True, null=True)
     date_uploaded = models.DateField(auto_now_add=True)
-    date_modified = models.DateField(blank=True, null=True)
-    date_published = models.DateField(blank=True, null=True)
+    date_modified = models.DateField(auto_now=True)
+    date_published = models.DateField(auto_now_add=True)
 
     published = models.CharField(max_length=255,
                                  choices=SHARING,
