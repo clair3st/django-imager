@@ -1,7 +1,7 @@
 """Views for imager_images."""
 
 from imager_images.models import Photo, Album
-from django.views.generic import ListView, DetailView, CreateView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView
 from django.urls import reverse_lazy
 
 
@@ -45,6 +45,31 @@ class PhotoAdd(CreateView):
               'published']
     success_url = reverse_lazy("library")
 
+
+class AlbumEdit(UpdateView):
+    """Class based view for editing an album."""
+
+    template_name = "imager_images/create.html"
+    model = Album
+    fields = ['owner',
+              'contents',
+              'title',
+              'description',
+              'published',
+              'cover_photo']
+    success_url = reverse_lazy("library")
+
+class PhotoEdit(UpdateView):
+    """Class based view for editing a photo."""
+
+    template_name = "imager_images/create.html"
+    model = Photo
+    fields = ['image_file',
+              'title',
+              'description',
+              'photographer',
+              'published']
+    success_url = reverse_lazy("library")
 
 class AlbumList(ListView):
     """Class based view for Album list."""
