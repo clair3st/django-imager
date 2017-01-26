@@ -51,6 +51,7 @@ class AlbumEdit(UpdateView):
 
     template_name = "imager_images/update.html"
     model = Album
+    login_required = True
     fields = ['owner',
               'contents',
               'title',
@@ -63,6 +64,7 @@ class AlbumEdit(UpdateView):
 class PhotoEdit(UpdateView):
     """Class based view for editing a photo."""
 
+    login_required = True
     template_name = "imager_images/update.html"
     model = Photo
     fields = ['image_file',
