@@ -17,6 +17,7 @@
             
             <ul class="unstyled">
 
+                <div>
                 {% for album in albums %}
                 <li class="col-sm-4">
                 <a href="{% url 'album_detail' album.id %}">
@@ -29,11 +30,12 @@
                     <p id="th-title"><b>{{ album.title }}</b></p>
                     <p class="date"><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
                 </li>
-
                 {% endfor %}
+                </div>
 
-
+                <div>
                 {% for photo in photos %}
+                
                 <li class="col-sm-4">
                 <a href="{% url 'photo_detail' photo.id %}">
                     <img style="width: 100px;" src="/media/{{ photo.image_file }}"></a>
@@ -42,6 +44,7 @@
                 </li>
 
                 {% endfor %}
+                </div>
             </ul>
         </div>
     </div>
