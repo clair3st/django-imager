@@ -59,6 +59,7 @@ class AlbumEdit(UpdateView):
               'cover_photo']
     success_url = reverse_lazy("library")
 
+
 class PhotoEdit(UpdateView):
     """Class based view for editing a photo."""
 
@@ -70,6 +71,7 @@ class PhotoEdit(UpdateView):
               'photographer',
               'published']
     success_url = reverse_lazy("library")
+
 
 class AlbumList(ListView):
     """Class based view for Album list."""

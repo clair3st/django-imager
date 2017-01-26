@@ -2,7 +2,9 @@
 
 from django.contrib.auth.models import User
 from imager_images.models import Photo, Album
-from django.views.generic import TemplateView
+from imager_profile.models import UserProfile
+from django.views.generic import TemplateView, UpdateView
+from django.urls import reverse_lazy
 
 
 class ProfileView(TemplateView):
@@ -28,3 +30,19 @@ class ProfileView(TemplateView):
             'album_private': album_data.filter(published="PRIVATE").count()
         }
         return {'profile': profile, 'data': data}
+
+
+class ProfileEdit(UpdateView):
+    """Class based view for editing a photo."""
+
+    template_name = 'imager_profile/profile_edit.html'
+    model = UserProfile
+    fields = ['address',
+              'camera',
+              'bio',
+              'website',
+              'hireable',
+              'travel_radius',
+              'phone',
+              'photo_type']
+    success_url = reverse_lazy("profile")
