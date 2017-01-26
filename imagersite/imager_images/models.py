@@ -2,6 +2,7 @@
 
 from django.db import models
 from imager_profile.models import UserProfile
+from django.utils.encoding import python_2_unicode_compatible
 
 # Create yo  models here.
 
@@ -13,6 +14,7 @@ SHARING = (
 )
 
 
+@python_2_unicode_compatible
 class Photo(models.Model):
     """One individaul photo."""
 
@@ -32,6 +34,10 @@ class Photo(models.Model):
                                  choices=SHARING,
                                  blank=True,
                                  null=True)
+
+    def __str__(self):
+        """String representation of UserProfile."""
+        return self.title
 
 
 class Album(models.Model):
