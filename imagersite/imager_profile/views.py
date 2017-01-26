@@ -1,10 +1,13 @@
 """Views for imager profile."""
 
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, UpdateView
+
 from imager_images.models import Photo, Album
 from imager_profile.models import UserProfile
-from django.views.generic import TemplateView, UpdateView
-from django.urls import reverse_lazy
+from imager_profile.forms import UserProfileForm
 
 
 class ProfileView(TemplateView):
@@ -33,16 +36,24 @@ class ProfileView(TemplateView):
 
 
 class ProfileEdit(UpdateView):
-    """Class based view for editing a photo."""
+    """Update profile and user info."""
 
+    login_required = True
     template_name = 'imager_profile/profile_edit.html'
+    success_url = reverse_lazy('my_profile')
+    form_class = UserProfileForm
     model = UserProfile
-    fields = ['address',
-              'camera',
-              'bio',
-              'website',
-              'hireable',
-              'travel_radius',
-              'phone',
-              'photo_type']
-    success_url = reverse_lazy("profile")
+
+    def get_object(self):
+        """Get the logged in user to edit."""
+        return self.request.user.profile
+
+    def form_valid(self, form):
+        """Save object after post."""
+        self.object = form.save()
+        self.object.user.first_name = form.cleaned_data['First Name']
+        self.object.user.last_name = form.cleaned_data['Last Name']
+        self.object.user.email = form.cleaned_data['Email']
+        self.object.user.save()
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
