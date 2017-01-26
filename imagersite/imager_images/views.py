@@ -26,13 +26,19 @@ class AlbumAdd(CreateView):
 
     template_name = "imager_images/create.html"
     model = Album
-    fields = ['owner',
-              'contents',
+    fields = ['contents',
               'title',
               'description',
               'published',
               'cover_photo']
     success_url = reverse_lazy("library")
+
+    def form_valid(self, form):
+        """Form should update the photographer to the user."""
+        self.object = form.save(commit=False)
+        self.object.owner = UserProfile.objects.get(user=self.request.user)
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class PhotoAdd(CreateView):
@@ -46,11 +52,12 @@ class PhotoAdd(CreateView):
               'published']
     success_url = reverse_lazy("library")
 
-    # def form_valid(self, form):
-    #     photo = form.save(commit=False)
-    #     photo.photographer = UserProfile.objects.get(user=self.request.user)
-    #     photo.save()
-    #     return HttpResponseRedirect(self.get_success_url())
+    def form_valid(self, form):
+        """Form should update the photographer to the user."""
+        self.object = form.save(commit=False)
+        self.object.photographer = UserProfile.objects.get(user=self.request.user)
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class AlbumEdit(UpdateView):
