@@ -19,9 +19,10 @@ Once your environment has been activated, make sure to install Django and all of
 ```
 (django-imager) $ pip install -r requirements.pip
 ```
-Navigate to the project root, django-imager, and apply the migrations for the app.
+Navigate to the project root, imagersite, and apply the migrations for the app.
 ```
-(django-imager) $ cd django-imager
+(django-imager) $ cd imagersite
+
 (django-imager) $ ./manage.py migrate
 ```
 Finally, run the server in order to server the app on localhost
@@ -89,8 +90,6 @@ The model also supports the following API:
 - `/images/photos/<id>` Detail view of photo by <id>.
 - `/images/albums/add/` Add a new album.
 - `/images/photos/add/` Add a new photo.
-
-
 
 ##Running Tests
 

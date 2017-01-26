@@ -2,6 +2,7 @@
 
 from django.db import models
 from imager_profile.models import UserProfile
+from django.utils.encoding import python_2_unicode_compatible
 
 # Create yo  models here.
 
@@ -13,6 +14,7 @@ SHARING = (
 )
 
 
+@python_2_unicode_compatible
 class Photo(models.Model):
     """One individaul photo."""
 
@@ -25,8 +27,7 @@ class Photo(models.Model):
 
     photographer = models.ForeignKey(UserProfile,
                                      related_name='photo',
-                                     blank=True,
-                                     null=True)
+                                     )
 
     published = models.CharField(max_length=255,
                                  choices=SHARING,
@@ -34,13 +35,13 @@ class Photo(models.Model):
                                  null=True)
 
 
+@python_2_unicode_compatible
 class Album(models.Model):
     """Album class, one user, many photos."""
 
     owner = models.ForeignKey(UserProfile,
                               related_name="albums",
-                              blank=True,
-                              null=True)
+                              )
 
     contents = models.ManyToManyField(Photo,
                                       related_name='in_album',
