@@ -1,8 +1,10 @@
 """Views for imager_images."""
 
 from imager_images.models import Photo, Album
+from imager_profile.models import UserProfile
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView
 from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
 
 
 class LibraryView(TemplateView):
@@ -41,9 +43,14 @@ class PhotoAdd(CreateView):
     fields = ['image_file',
               'title',
               'description',
-              'photographer',
               'published']
     success_url = reverse_lazy("library")
+
+    # def form_valid(self, form):
+    #     photo = form.save(commit=False)
+    #     photo.photographer = UserProfile.objects.get(user=self.request.user)
+    #     photo.save()
+    #     return HttpResponseRedirect(self.get_success_url())
 
 
 class AlbumEdit(UpdateView):
@@ -52,8 +59,7 @@ class AlbumEdit(UpdateView):
     template_name = "imager_images/update.html"
     model = Album
     login_required = True
-    fields = ['owner',
-              'contents',
+    fields = ['contents',
               'title',
               'description',
               'published',
@@ -70,7 +76,6 @@ class PhotoEdit(UpdateView):
     fields = ['image_file',
               'title',
               'description',
-              'photographer',
               'published']
     success_url = reverse_lazy("library")
 
