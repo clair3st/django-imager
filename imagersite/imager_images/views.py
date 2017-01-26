@@ -49,7 +49,7 @@ class PhotoAdd(CreateView):
 class AlbumEdit(UpdateView):
     """Class based view for editing an album."""
 
-    template_name = "imager_images/create.html"
+    template_name = "imager_images/update.html"
     model = Album
     fields = ['owner',
               'contents',
@@ -63,7 +63,7 @@ class AlbumEdit(UpdateView):
 class PhotoEdit(UpdateView):
     """Class based view for editing a photo."""
 
-    template_name = "imager_images/create.html"
+    template_name = "imager_images/update.html"
     model = Photo
     fields = ['image_file',
               'title',
