@@ -3,8 +3,16 @@
 {% block body %}
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
+        <div class='page-header'>
+            <div class='btn-toolbar pull-right'>
+                <div class='btn-group'>
+                    <a class="btn btn-primary" href="{% url 'album_edit' album.id %}">Edit</a>
+                </div>
+        </div>
             <h1>{{ album.title }}</h1>
+        </div>
+        <div class="col-sm-12">
+
             <ul class="unstyled">
 
 

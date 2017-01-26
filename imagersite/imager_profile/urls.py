@@ -10,5 +10,5 @@ from imager_profile.views import (
 urlpatterns = [
     url(r'^$', ProfileView.as_view(), name='my_profile'),
     url(r'^(?P<username>\w+)/$', ProfileView.as_view(), name='profile'),
-    url(r'edit/$', ProfileEdit.as_view(), name='profile_edit'),
+    url(r'^edit/$', ProfileEdit.as_view(), name='profile_edit'),
 ]
