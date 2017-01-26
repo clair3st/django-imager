@@ -81,7 +81,13 @@ The model also supports the following API:
 - `/accounts/register` Register a user form.
 - `/accounts/activate/complete/` Activation complete view.
 - `/accounts/register/complete/` Registration complete, email sent.
-
+- `/profile` Logged in user's profile view.
+- `/profile/<username>` Profile matching <username>.
+- `/images/albums` All public photos in imagersite database.
+- `/images/photos` All public albums in imagersite database.
+- `/images/library` Library of a users photos and albums.
+- `/images/albums/<id>` Detail view of album by <id>.
+- `/images/photos/<id>` Detail view of photo by <id>.
 
 ##Running Tests
 

@@ -5,6 +5,8 @@ from imager_profile.models import UserProfile
 import factory
 from django.test import Client, RequestFactory
 
+from django.urls import reverse_lazy
+
 
 class UserFactory(factory.django.DjangoModelFactory):
     """Setting up users for tests."""
@@ -172,17 +174,22 @@ class ProfileFrontEndTests(TestCase):
         self.assertTrue(response.status_code == 200)
 
     def test_home_route_uses_right_templates(self):
-        """."""
-        response = self.client.get("/")
+        """Test home route has the right templates."""
+        response = self.client.get(reverse_lazy("home"))
         self.assertTemplateUsed(response, "imagersite/base.html")
         self.assertTemplateUsed(response, "imagersite/home.html")
 
-    def test_login_route_status_of_302(self):
-        """Test login route redirects status of 302."""
+    def user_to_login(self):
+        """Login a user."""
         new_user = UserFactory.create()
         new_user.username = 'foo-bar'
         new_user.set_password('wordpass')
         new_user.save()
+        return new_user
+
+    def test_login_route_status_of_302(self):
+        """Test login route redirects status of 302."""
+        new_user = self.user_to_login()
         response = self.client.post("/login/", {
             "username": new_user.username,
             "password": 'wordpass'
@@ -201,7 +208,7 @@ class ProfileFrontEndTests(TestCase):
             "password": 'wordpass'
         }, follow=True)
 
-        self.assertTrue(response.redirect_chain[0][0] == "/")
+        self.assertTrue(response.redirect_chain[0][0] == "/profile/")
 
     def test_login_route_redirects_home_page_no_login(self):
         """Test login route redirects to home page with no login link."""
@@ -273,3 +280,22 @@ class ProfileFrontEndTests(TestCase):
         )
         complete = '/accounts/activate/complete/'
         self.assertTrue(response2.url == complete)
+
+    def test_login_can_view_separate_users_profile(self):
+        """Test login and view separate users profile."""
+        new_user = self.user_to_login()
+        self.client.login(username=new_user.username, password='wordpass')
+
+        user2 = User()
+        user2.username = "colin_the_fearsome"
+        user2.email = "colin@kills.you"
+        user2.set_password("colinrulz")
+        user2.save()
+
+        response = self.client.get(
+            reverse_lazy("profile", kwargs={
+                "username": user2.username
+            })
+        )
+
+        self.assertTrue(user2.username in str(response.content))

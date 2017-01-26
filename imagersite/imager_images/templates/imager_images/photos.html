@@ -1,0 +1,27 @@
+{% extends 'imagersite/layout.html' %}
+
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h1>Published Photos</h1>
+            <ul class="unstyled">
+
+{% for photo in photos %}
+                <li class="col-sm-4">
+                    <p><b>Title: </b>{{ photo.title }}</p>
+                    <p><b>Description: </b>{{ photo.description}}</p>
+                    <p><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
+
+                    <p><b>Thumbnail: </b></p>
+                    <img style="width: 100px;" src="/media/{{ photo.image_file }}">
+                </li>
+    
+{% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

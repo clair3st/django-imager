@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'imager_profile',
     'imagersite',
+    'imager_profile',
     'imager_images',
 ]
 
@@ -129,7 +129,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'my_profile'
 
 
 # Email setup
@@ -145,4 +145,6 @@ EMAIL_HOST_USER = 'coding.projects17@gmail.com'
 
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD", "")
 
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'MEDIA')
+MEDIA_URL = "/media/"

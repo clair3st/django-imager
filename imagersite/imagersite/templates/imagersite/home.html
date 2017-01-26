@@ -10,7 +10,12 @@
 {% endblock stylesheets %}
 
 {% block content %}
+{% if photo.image_file %}
+  <body style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/media/{{ photo.image_file }}')">
+{% else %}
   <body style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url({% static 'imagersite/IMG_2790.jpg' %})">
+{% endif %}
+
   
     <div class="site-wrapper">
 
@@ -26,7 +31,7 @@
                   <li class="active"><a href="/">Home</a></li>
                   {% if user.is_authenticated %}
                   <li><a href="{% url 'logout' %}">Logout</a></li>
-                  <li><a>{{ user.username }}</a></li>
+                  <li><a href="{% url 'my_profile' %}">{{ user.username }}</a></li>
                   {% endif %}
                   {% if not user.is_authenticated %}
                   <li><a href="{% url 'login' %}">Login</a></li>
@@ -59,3 +64,4 @@
     </div>
 
     {% endblock %}
+}

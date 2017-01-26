@@ -8,5 +8,11 @@ class AlbumAdmin(admin.ModelAdmin):
 
     list_display = ("title", "description", "date_uploaded")
 
-admin.site.register(Album)
-admin.site.register(Photo)
+
+class PhotoAdmin(admin.ModelAdmin):
+    """Display a list for Photos in Admin."""
+
+    list_display = ("title", "description", "date_uploaded")
+
+admin.site.register(Album, AlbumAdmin)
+admin.site.register(Photo, PhotoAdmin)

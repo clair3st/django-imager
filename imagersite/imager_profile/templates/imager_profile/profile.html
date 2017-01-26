@@ -1,0 +1,42 @@
+{% extends 'imagersite/layout.html' %}
+
+
+{% block body %}
+<div class="page-header">
+        <h1>Profile</h1>
+</div>
+ 
+<p><b>Username:</b> {{ profile.user.username }}</p>
+<p><b>Name:</b> {{ profile.user.name }}</p>
+<p><b>Address:</b> {{ profile.address}}</p>
+<p><b>Phone:</b> {{ profile.phone}}</p>
+<p><b>Bio:</b> {{ profile.bio }}</p>
+<p><b>Camera:</b> {{ profile.camera }}</p>
+<p><b>Photography Style:</b> {{ profile.photo_type }}</p>
+
+
+<h3>Business Info</h3>
+<p><b>Hireable:</b> {{ profile.hireable }}</p>
+<p><b>Willing to travel:</b> {{ profile.travel_radius }}</p>
+<p><b>Website:</b> <a href="{{ profile.website }}">{{ profile.website }}</a></p>
+
+<h3>Photos</h3>
+    {% if user == profile.user %}
+    <p><b>Private:</b> {{ data.photos_private }}<p>
+    {% endif %}
+    <p><b>Public:</b> {{ data.photo_published }}<p>
+
+<h3>Albums</h3>
+    {% if user == profile.user %}
+    <p><b>Private:</b> {{ data.album_private }}<p>
+    {% endif %}
+
+    <p><b>Public:</b> {{ data.album_publised }}<p>
+
+
+  <a href="{% url 'library' %}" class="btn btn-primary">Gallery</a>
+
+
+
+
+{% endblock body %}

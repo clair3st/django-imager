@@ -1,10 +1,16 @@
 """View for website."""
-
+from imager_images.models import Photo
 from django.shortcuts import render
+
 
 def home_view(request):
     """Home view callable, for the home page."""
-    return render(request, "imagersite/home.html")
+    import random
+    all_imgs = Photo.objects.filter(published="PUBLIC")
 
-# def test_view(request, num=None, word=None):
-#         return render(request, "templates/")
+    try:
+        random_img = random.choice(all_imgs)
+    except IndexError:
+        random_img = None
+
+    return render(request, "imagersite/home.html", {'photo': random_img})

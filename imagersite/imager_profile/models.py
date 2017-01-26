@@ -29,6 +29,7 @@ class UserProfile(models.Model):
         ('SONY', "Sony"),
         ('PANASONIC', "Panasonic"),
         ('PHONE', "Smart Phone"),
+        ('', "---Camera Types---"),
     )
 
     STYLES = (
@@ -40,6 +41,7 @@ class UserProfile(models.Model):
         ('WILDLIFE', "Wildlife"),
         ('URBAN', "Urban"),
         ('TRAVEL', "Travel"),
+        ('', "---Photography Styles---"),
         ('LE', 'Long Exposure'),
     )
 
@@ -54,8 +56,9 @@ class UserProfile(models.Model):
                               blank=True,
                               null=True)
 
-    address = models.CharField(max_length=255, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+
     website = models.URLField(blank=True)
     hireable = models.BooleanField(default=True)
     travel_radius = models.PositiveSmallIntegerField(default=5)
