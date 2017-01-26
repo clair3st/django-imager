@@ -1,4 +1,4 @@
-# django-imager
+# django-imager [![Build Status](https://travis-ci.org/clair3st/django-imager.svg?branch=front-end-1)](https://travis-ci.org/clair3st/django-imager)
  simple image management website using Django.
 
 **Authors:** Claire Gatenby and Colin Lamont
@@ -22,6 +22,7 @@ Once your environment has been activated, make sure to install Django and all of
 Navigate to the project root, imagersite, and apply the migrations for the app.
 ```
 (django-imager) $ cd imagersite
+
 (django-imager) $ ./manage.py migrate
 ```
 Finally, run the server in order to server the app on localhost
@@ -72,6 +73,7 @@ The model also supports the following API:
 
 
 ##Current URL Routes
+
 - `/admin` Superuser admin page.
 - `/` Home page.
 - `/login` Login page.

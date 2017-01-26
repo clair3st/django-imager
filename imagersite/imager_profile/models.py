@@ -7,7 +7,6 @@ from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 
 
-
 class IsActiveManager(models.Manager):
     """This returns the active users, manager subclass."""
 
@@ -23,12 +22,13 @@ class UserProfile(models.Model):
     """The library patron and all of its attributes."""
 
     CAMERAS = (
-        ('CANNON', "Cannon"),
+
+        ('CANON', "Canon"),
         ('NIKON', "Nikon"),
         ('OLYMPUS', "Olympus"),
         ('SONY', "Sony"),
         ('PANASONIC', "Panasonic"),
-        ('PHONE', "Phone"),
+        ('PHONE', "Smart Phone"),
     )
 
     STYLES = (
@@ -40,6 +40,7 @@ class UserProfile(models.Model):
         ('WILDLIFE', "Wildlife"),
         ('URBAN', "Urban"),
         ('TRAVEL', "Travel"),
+        ('LE', 'Long Exposure'),
     )
 
     user = models.OneToOneField(
@@ -52,8 +53,9 @@ class UserProfile(models.Model):
                               choices=CAMERAS,
                               blank=True,
                               null=True)
-    address = models.TextField(blank=True, null=True)
-    bio = models.CharField(max_length=255, blank=True, null=True)
+
+    address = models.CharField(max_length=255, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
     website = models.URLField(blank=True)
     hireable = models.BooleanField(default=True)
     travel_radius = models.PositiveSmallIntegerField(default=5)
