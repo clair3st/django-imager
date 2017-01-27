@@ -1,6 +1,7 @@
 """Views for imager_images."""
 
 from imager_images.models import Photo, Album
+from django.contrib.auth.mixins import LoginRequiredMixin
 from imager_profile.models import UserProfile
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView
 from django.urls import reverse_lazy
@@ -21,7 +22,7 @@ class LibraryView(TemplateView):
         return context
 
 
-class AlbumAdd(CreateView):
+class AlbumAdd(LoginRequiredMixin, CreateView):
     """Class based view for adding an album."""
 
     template_name = "imager_images/create.html"
@@ -32,6 +33,7 @@ class AlbumAdd(CreateView):
               'published',
               'cover_photo']
     success_url = reverse_lazy("library")
+    login_url = reverse_lazy("login")
 
     def form_valid(self, form):
         """Form should update the photographer to the user."""
@@ -41,7 +43,7 @@ class AlbumAdd(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class PhotoAdd(CreateView):
+class PhotoAdd(LoginRequiredMixin, CreateView):
     """Class based view for adding a photo."""
 
     template_name = "imager_images/create.html"
@@ -51,6 +53,7 @@ class PhotoAdd(CreateView):
               'description',
               'published']
     success_url = reverse_lazy("library")
+    login_url = reverse_lazy("login")
 
     def form_valid(self, form):
         """Form should update the photographer to the user."""
@@ -60,24 +63,23 @@ class PhotoAdd(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class AlbumEdit(UpdateView):
+class AlbumEdit(LoginRequiredMixin, UpdateView):
     """Class based view for editing an album."""
 
     template_name = "imager_images/update.html"
     model = Album
-    login_required = True
     fields = ['contents',
               'title',
               'description',
               'published',
               'cover_photo']
     success_url = reverse_lazy("library")
+    login_url = reverse_lazy("login")
 
 
-class PhotoEdit(UpdateView):
+class PhotoEdit(LoginRequiredMixin, UpdateView):
     """Class based view for editing a photo."""
 
-    login_required = True
     template_name = "imager_images/update.html"
     model = Photo
     fields = ['image_file',
@@ -85,6 +87,7 @@ class PhotoEdit(UpdateView):
               'description',
               'published']
     success_url = reverse_lazy("library")
+    login_url = reverse_lazy("login")
 
 
 class AlbumList(ListView):
