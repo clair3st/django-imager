@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '2t#jmg22gz)dxy%u%7zk=2sb-94kr8znov(8t)a!$bsrnlt^_6'
+SECRET_KEY = os.environ.get("SECRET_KEY", '')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get("DEBUG", False))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split()
 
 
 # Application definition
@@ -79,10 +79,10 @@ WSGI_APPLICATION = 'imagersite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'imagersite',
+        'NAME': os.environ.get("DATABASE_NAME", ''),
         'USER': os.environ.get("USER_NAME", ''),
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'HOST': os.environ.get("HOST", ''),
+        'PORT': os.environ.get("PORT", ''),
         'TEST': {
             'NAME': 'test_imager'
         }
@@ -135,7 +135,7 @@ LOGIN_REDIRECT_URL = 'my_profile'
 # Email setup
 ACCOUNT_ACTIVATION_DAYS = 7
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
