@@ -19,18 +19,24 @@ class LibraryView(TemplateView):
         return context
 
 
-class AlbumAdd(CreateView):
+    class AlbumAdd(CreateView):
     """Class based view for adding an album."""
 
     template_name = "imager_images/create.html"
     model = Album
-    fields = ['owner',
-              'contents',
+    fields = ['contents',
               'title',
               'description',
               'published',
               'cover_photo']
     success_url = reverse_lazy("library")
+
+    def form_valid(self, form):
+        """Form should update the photographer to the user."""
+        self.object = form.save(commit=False)
+        self.object.owner = UserProfile.objects.get(user=self.request.user)
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class PhotoAdd(CreateView):
@@ -41,9 +47,15 @@ class PhotoAdd(CreateView):
     fields = ['image_file',
               'title',
               'description',
-              'photographer',
               'published']
     success_url = reverse_lazy("library")
+
+    def form_valid(self, form):
+        """Form should update the photographer to the user."""
+        self.object = form.save(commit=False)
+        self.object.photographer = UserProfile.objects.get(user=self.request.user)
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class AlbumList(ListView):
