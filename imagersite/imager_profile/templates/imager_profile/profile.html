@@ -3,9 +3,9 @@
 
 {% block body %}
 <div class='page-header'>
+            {% if user == profile.user %}
     <div class='btn-toolbar pull-right'>
             <div class='btn-group'>
-            {% if user == profile.user %}
                     <a href="{% url 'library' %}" class="btn btn-primary">Gallery</a>
                     <a href="{% url 'photo_add' %}" class="btn btn-primary">Add Photo</a>
                     <a href="{% url 'album_add' %}" class="btn btn-primary">Add Album</a>
