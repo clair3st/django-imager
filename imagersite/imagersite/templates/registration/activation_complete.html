@@ -2,8 +2,12 @@
 
 {% block body %}
 
-  <h2>Congratulations!</h2>
+  <h1>Congratulations!</h1>
   <p>You have successfully completed registration to IMAGE-Nation</p>
-  <a class="btn btn-primary" href="/">Home</a>
+  <p>To get started, why not edit your profile, so we can get to know you.</p>
+
+  <a href="{% url 'profile_edit' %}" class="btn btn-primary">Edit Profile</a>
+
+  <a href="/" class="btn btn-primary">Home</a>
   
 {% endblock %}

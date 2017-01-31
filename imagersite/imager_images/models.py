@@ -19,7 +19,7 @@ class Photo(models.Model):
 
     image_file = models.ImageField(upload_to="")
     title = models.CharField(max_length=255, blank=True, null=True)
-    description = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(max_length=255, blank=True, null=True)
     date_uploaded = models.DateField(auto_now_add=True)
     date_modified = models.DateField(auto_now=True)
     date_published = models.DateField(auto_now_add=True)
@@ -33,6 +33,10 @@ class Photo(models.Model):
     published = models.CharField(max_length=255,
                                  choices=SHARING,
                                  default='PUBLIC')
+
+    def __str__(self):
+        """String representation of UserProfile."""
+        return self.title
 
 
 @python_2_unicode_compatible
@@ -50,7 +54,7 @@ class Album(models.Model):
                                       blank=True)
 
     title = models.CharField(max_length=255, blank=True, null=True)
-    description = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(max_length=255, blank=True, null=True)
     date_uploaded = models.DateField(auto_now_add=True)
     date_modified = models.DateField(auto_now=True)
     date_published = models.DateField(auto_now_add=True)

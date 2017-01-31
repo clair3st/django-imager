@@ -14,9 +14,9 @@
                     <a href="{% url 'album_detail' album.id %}">
 
                     {% if album.cover_photo.image_file %}
-                        <img style="width: 100px;" src="/media/{{ album.cover_photo.image_file }}">
+                        <img style="object-fit: cover; height: 100px;" src="/media/{{ album.cover_photo.image_file }}">
                     {% else %}
-                        <img style="width: 100px;" src="{% static 'imagersite/IMG_2790.jpg' %}">
+                        <img style="object-fit: cover; height: 100px;" src="{% static 'imagersite/IMG_2790.jpg' %}">
                     {% endif %}
                     </a>
                     <p id="th-title"><b>{{ album.title }}</b></p>

@@ -59,6 +59,7 @@ body > .container {
 .footer > .container {
   padding-right: 15px;
   padding-left: 15px;
+  margin-top: 5px;
 }
 
 code {
@@ -94,11 +95,17 @@ h1, h3 {
   font-family: 'Permanent Marker', cursive;
 }
 
-.btn-primary {
-  margin: 20px;
+.btn-group .btn-primary {
+  margin: 15px 5px;
+  font-size: 70%;
+  padding: 3px;
 }
 
 .btn {
   background-color: #f37673;
   border-color: #f37673;
+}
+
+.albums {
+  margin-bottom: 30px;
 }

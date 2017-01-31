@@ -439,3 +439,58 @@ class ProfileFrontEndTests(TestCase):
         response = self.client.get(reverse_lazy("library"))
 
         self.assertTrue("Add Photo" and "Add Album" in str(response.content))
+
+    def test_logged_in_user_can_get_to_edit_photo_page(self):
+        """Test authenticated user can get to edit photo page."""
+        photo = self.photos[0]
+        user = self.user_login()
+        self.client.force_login(user)
+        response = self.client.get("/images/photos/" + str(photo.pk) + "/edit/")
+        self.assertTrue(response.status_code == 200)
+
+    def test_logged_in_user_can_get_to_edit_album_page(self):
+        """Test authenticated user can get to edit album page."""
+        album = self.albums[0]
+        user = self.user_login()
+        self.client.force_login(user)
+        response = self.client.get("/images/photos/" + str(album.pk) + "/edit/")
+        self.assertTrue(response.status_code == 200)
+
+    def test_edit_photo_page_renders_correct_html(self):
+        """Test authenticated user gets the right html on edit photo page."""
+        photo = self.photos[0]
+        user = self.user_login()
+        self.client.force_login(user)
+        response = self.client.get("/images/photos/" + str(photo.pk) + "/edit/")
+        self.assertTrue("Save" in response.rendered_content)
+
+    def test_edit_album_page_renders_correct_html(self):
+        """Test authenticated user gets correct html on edit album page."""
+        album = self.albums[0]
+        user = self.user_login()
+        self.client.force_login(user)
+        response = self.client.get("/images/photos/" + str(album.pk) + "/edit/")
+        self.assertTrue("Save" in response.rendered_content)
+
+    def test_edit_profile_page_can_get_to_the_page(self):
+        """Test authenticated user gets the correct html on edit profile page."""
+        user = self.user_login()
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy("profile_edit"))
+        self.assertTrue(response.status_code == 200)
+
+    def test_edit_profile_page_renders_correct_html(self):
+        """Test authenticated user gets the correct html on edit profile page."""
+        user = self.user_login()
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy("profile_edit"))
+        self.assertTrue("Edit Profile" in response.rendered_content)
+
+    def test_edit_profile_page_has_new_form_fields(self):
+        """Test authenticated user sees the new form fields to enter on edit profile page."""
+        user = self.user_login()
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy("profile_edit"))
+        self.assertTrue("First Name" in response.rendered_content)
+        self.assertTrue("Last Name" in response.rendered_content)
+        self.assertTrue("Email" in response.rendered_content)

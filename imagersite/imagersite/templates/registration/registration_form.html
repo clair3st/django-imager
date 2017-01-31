@@ -1,7 +1,7 @@
 {% extends 'imagersite/layout.html' %}
 
 {% block body %}
-  <h2>Register</h2>
+  <h1>Register</h1>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

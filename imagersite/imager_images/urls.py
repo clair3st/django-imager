@@ -10,6 +10,8 @@ from imager_images.views import (
     AlbumDetail,
     AlbumAdd,
     PhotoAdd,
+    AlbumEdit,
+    PhotoEdit,
 )
 
 urlpatterns = [
@@ -20,5 +22,6 @@ urlpatterns = [
     url(r'^albums/(?P<pk>\d+)$', AlbumDetail.as_view(), name='album_detail'),
     url(r'^albums/add/$', AlbumAdd.as_view(), name='album_add'),
     url(r'^photos/add/$', PhotoAdd.as_view(), name='photo_add'),
-
+    url(r'^albums/(?P<pk>\d+)/edit/$', AlbumEdit.as_view(), name='album_edit'),
+    url(r'^photos/(?P<pk>\d+)/edit/$', PhotoEdit.as_view(), name='photo_edit'),
 ]

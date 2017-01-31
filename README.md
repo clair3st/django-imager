@@ -90,6 +90,10 @@ The model also supports the following API:
 - `/images/photos/<id>` Detail view of photo by <id>.
 - `/images/albums/add/` Add a new album.
 - `/images/photos/add/` Add a new photo.
+- `/images/photos/<id>/edit` Edit a given photo.
+- `/images/albums/<id>/edit` Edit a given album.
+- `/profile/edit` Edit a logged in user profile.
+
 
 ##Running Tests
 

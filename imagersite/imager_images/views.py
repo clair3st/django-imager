@@ -1,8 +1,10 @@
 """Views for imager_images."""
 
 from imager_images.models import Photo, Album
-from django.views.generic import ListView, DetailView, CreateView, TemplateView
+from imager_profile.models import UserProfile
+from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView
 from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
 
 
 class LibraryView(TemplateView):
@@ -56,6 +58,33 @@ class PhotoAdd(CreateView):
         self.object.photographer = UserProfile.objects.get(user=self.request.user)
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
+
+
+class AlbumEdit(UpdateView):
+    """Class based view for editing an album."""
+
+    template_name = "imager_images/update.html"
+    model = Album
+    login_required = True
+    fields = ['contents',
+              'title',
+              'description',
+              'published',
+              'cover_photo']
+    success_url = reverse_lazy("library")
+
+
+class PhotoEdit(UpdateView):
+    """Class based view for editing a photo."""
+
+    login_required = True
+    template_name = "imager_images/update.html"
+    model = Photo
+    fields = ['image_file',
+              'title',
+              'description',
+              'published']
+    success_url = reverse_lazy("library")
 
 
 class AlbumList(ListView):

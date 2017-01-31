@@ -3,20 +3,23 @@
 
 {% block body %}
 <div class='page-header'>
-            {% if user == profile.user %}
+
+    {% if user == profile.user %}
+
     <div class='btn-toolbar pull-right'>
             <div class='btn-group'>
                     <a href="{% url 'library' %}" class="btn btn-primary">Gallery</a>
                     <a href="{% url 'photo_add' %}" class="btn btn-primary">Add Photo</a>
                     <a href="{% url 'album_add' %}" class="btn btn-primary">Add Album</a>
-            {% endif %}
+                    <a href="{% url 'profile_edit' %}" class="btn btn-primary">Edit Profile</a>
             </div>
         </div>
+        {% endif %}
         <h1>Profile</h1>
     </div>
  
 <p><b>Username:</b> {{ profile.user.username }}</p>
-<p><b>Name:</b> {{ profile.user.name }}</p>
+<p><b>Name:</b> {{ profile.user.first_name }} {{ profile.user.last_name }}</p>
 <p><b>Address:</b> {{ profile.address}}</p>
 <p><b>Phone:</b> {{ profile.phone}}</p>
 <p><b>Bio:</b> {{ profile.bio }}</p>
@@ -36,7 +39,7 @@
     {% endif %}
     <p><b>Public:</b> {{ data.photo_published }}<p>
 </div>
-<div class="col-xs-4">
+<div class="col-xs-4 albums">
 <h3>Albums</h3>
     {% if user == profile.user %}
     <p><b>Private:</b> {{ data.album_private }}<p>
