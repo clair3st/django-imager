@@ -75,6 +75,7 @@ class AlbumEdit(UserPassesTestMixin, UpdateView):
               'published',
               'cover_photo']
     success_url = reverse_lazy("library")
+    raise_exception = True
 
     def test_func(self):
         """Override the userpassestest test_func."""
@@ -92,7 +93,7 @@ class PhotoEdit(UserPassesTestMixin, UpdateView):
               'description',
               'published']
     success_url = reverse_lazy("library")
-    login_url = reverse_lazy("home")
+    raise_exception = True
 
     def test_func(self):
         """Override the userpassestest test_func."""
