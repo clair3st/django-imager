@@ -6,6 +6,7 @@ from imager_profile.models import UserProfile
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 
 class LibraryView(TemplateView):
@@ -63,7 +64,7 @@ class PhotoAdd(LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class AlbumEdit(LoginRequiredMixin, UpdateView):
+class AlbumEdit(UserPassesTestMixin, UpdateView):
     """Class based view for editing an album."""
 
     template_name = "imager_images/update.html"
@@ -74,10 +75,14 @@ class AlbumEdit(LoginRequiredMixin, UpdateView):
               'published',
               'cover_photo']
     success_url = reverse_lazy("library")
-    login_url = reverse_lazy("login")
+
+    def test_func(self):
+        """Override the userpassestest test_func."""
+        album = Album.objects.get(pk=self.kwargs['pk'])
+        return album.owner.user == self.request.user
 
 
-class PhotoEdit(LoginRequiredMixin, UpdateView):
+class PhotoEdit(UserPassesTestMixin, UpdateView):
     """Class based view for editing a photo."""
 
     template_name = "imager_images/update.html"
@@ -87,7 +92,12 @@ class PhotoEdit(LoginRequiredMixin, UpdateView):
               'description',
               'published']
     success_url = reverse_lazy("library")
-    login_url = reverse_lazy("login")
+    login_url = reverse_lazy("home")
+
+    def test_func(self):
+        """Override the userpassestest test_func."""
+        photo = Photo.objects.get(pk=self.kwargs['pk'])
+        return photo.photographer.user == self.request.user
 
 
 class AlbumList(ListView):
@@ -126,3 +136,4 @@ class AlbumDetail(DetailView):
 
     template_name = 'imager_images/album_detail.html'
     model = Album
+    # context_object_name = 'album'
