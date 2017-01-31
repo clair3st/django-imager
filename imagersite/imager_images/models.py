@@ -10,7 +10,6 @@ SHARING = (
     ('PRIVATE', "Private"),
     ('SHARED', "Shared"),
     ('PUBLIC', "Public"),
-    ('', "Select who can view")
 )
 
 
@@ -27,12 +26,13 @@ class Photo(models.Model):
 
     photographer = models.ForeignKey(UserProfile,
                                      related_name='photo',
+                                     blank=True,
+                                     null=True
                                      )
 
     published = models.CharField(max_length=255,
                                  choices=SHARING,
-                                 blank=True,
-                                 null=True)
+                                 default='PUBLIC')
 
 
 @python_2_unicode_compatible
@@ -41,6 +41,8 @@ class Album(models.Model):
 
     owner = models.ForeignKey(UserProfile,
                               related_name="albums",
+                              blank=True,
+                              null=True
                               )
 
     contents = models.ManyToManyField(Photo,
@@ -55,8 +57,7 @@ class Album(models.Model):
 
     published = models.CharField(max_length=255,
                                  choices=SHARING,
-                                 blank=True,
-                                 null=True)
+                                 default='PUBLIC')
 
     cover_photo = models.ForeignKey(Photo,
                                     related_name='cover',
