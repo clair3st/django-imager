@@ -19,7 +19,7 @@ class LibraryView(TemplateView):
         return context
 
 
-    class AlbumAdd(CreateView):
+class AlbumAdd(CreateView):
     """Class based view for adding an album."""
 
     template_name = "imager_images/create.html"
