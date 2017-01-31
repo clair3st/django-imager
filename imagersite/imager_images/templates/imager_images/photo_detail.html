@@ -10,7 +10,9 @@
     <p id="th-title"><b>{{ photo.title }}</b></p>
     <p>{{ photo.description}}</p>
     <p><b>Full size url: </b><a href="/media/{{ photo.image_file }}">Link</a></p>
+    {% if user == photo.photographer %}
     <a href="{% url 'photo_edit' photo.id %}">Edit</a>
+    {% endif %}
     <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
 
 {% endblock body %}
