@@ -143,7 +143,8 @@ EMAIL_PORT = 465
 EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = 'coding.projects17@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ["EMAIL_PASSWORD"]
+
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD", "")
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'MEDIA')

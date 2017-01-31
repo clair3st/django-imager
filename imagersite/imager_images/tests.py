@@ -72,11 +72,11 @@ class UserTestCase(TestCase):
         """Test photo has a photographer."""
         this_photo = self.photos[0]
         this_photo.save()
-        self.assertFalse(self.photos[0].photographer)
         this_user = self.users[0]
         this_user.save()
         this_photo.photographer = this_user.profile
-        self.assertTrue(self.photos[0].photographer)
+        this_photo.save()
+        self.assertTrue(self.photos[0].photographer == self.users[0].profile)
 
     def test_album_has_a_description(self):
         """Test an album has a description."""

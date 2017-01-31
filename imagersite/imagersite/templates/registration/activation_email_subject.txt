@@ -1,1 +1,1 @@
-{{ site.name }}: Please activate your account.
+{{ site }}: Please activate your account, {{ user }}.
