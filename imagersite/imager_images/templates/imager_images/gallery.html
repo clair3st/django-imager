@@ -19,8 +19,10 @@
 
                 <div>
                 {% for album in albums %}
+
                 <li class="col-sm-4">
                 <a href="{% url 'album_detail' album.id %}">
+
                     {% if album.cover_photo.image_file %}
                         <img style="object-fit: cover; height: 100px;" src="/media/{{ album.cover_photo.image_file }}">
                     {% else %}
