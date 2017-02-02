@@ -1,5 +1,6 @@
 """Views for imager profile."""
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -35,7 +36,7 @@ class ProfileView(TemplateView):
         return {'profile': profile, 'data': data}
 
 
-class ProfileEdit(UpdateView):
+class ProfileEdit(LoginRequiredMixin, UpdateView):
     """Update profile and user info."""
 
     login_required = True
@@ -43,6 +44,7 @@ class ProfileEdit(UpdateView):
     success_url = reverse_lazy('my_profile')
     form_class = UserProfileForm
     model = UserProfile
+    login_url = reverse_lazy("login")
 
     def get_object(self):
         """Get the logged in user to edit."""
