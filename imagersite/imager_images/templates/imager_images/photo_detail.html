@@ -13,6 +13,20 @@
     {% if user == photo.photographer %}
     <a href="{% url 'photo_edit' photo.id %}">Edit</a>
     {% endif %}
+    {% if tag %}
+    <li>Tags:
+        {% for tag in photos.tags.all %}
+            <a href="{% url "imager_images:tagged" tag.slug %}">{{ tag }}</a>,
+        {% endfor %}
+    </li>
+    {% endif %}
     <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
-
+<h2>Photos in the same category:</h2>
+<ul>
+    {% for next_book in similar_books %}
+        <li>
+            <a href="{% url "library_books:book_page" next_book.id %}">{{ next_book.title }}</a>
+        </li>
+    {% endfor %}
+</ul>
 {% endblock body %}

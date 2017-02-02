@@ -15,6 +15,9 @@
                     </a>
                     <p id="th-title"><b>{{ photo.title }}</b></p>
                     <p>{{ photo.description}}</p>
+                    {% if tag %}
+                        <p>Tags: {{ tag }}</p>
+                    {% endif %}
                     <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
                 </li>
     

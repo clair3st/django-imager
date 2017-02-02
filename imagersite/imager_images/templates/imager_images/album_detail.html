@@ -12,6 +12,13 @@
                 </div>
         </div>
             <h1>{{ album.title }}</h1>
+            {% if tag %}
+            <li>Tags:
+                {% for tag in albums.tags.all %}
+                    <a href="{% url "imager_images:tagged" tag.slug %}">{{ tag }}</a>,
+                {% endfor %}
+            </li>
+            {% endif %}
         </div>
         <div class="col-sm-12">
 
