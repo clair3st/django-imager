@@ -15,10 +15,10 @@
             <h1>Gallery</h1>
         </div>
             
-            <ul class="unstyled">
 
-                <div>
-                <p><b>Albums:</b></p>
+                <h3 class="offset2">Albums</h3>
+                <section class="row">
+            <ul class="unstyled">
                 {% for album in albums %}
 
                 <li class="col-sm-4">
@@ -34,17 +34,18 @@
                     <p class="date"><b>Date Uploaded: </b>{{ album.date_uploaded}}</p>
                 </li>
                 {% endfor %}
-                </div>
+                </ul>
+                </section>
 
-                <div>
-                <p><b>Photos:</b></p>
+                <h3 class="offset2">Photos</h3>
+                <section class="row offset2">
+                <ul class="unstyled">
                 {% for photo in photos %}
                 
                 <li class="col-sm-4">
                 <a href="{% url 'photo_detail' photo.id %}">
                     <img style="object-fit: cover; height: 100px;" src="/media/{{ photo.image_file }}"></a>
                     <p id="th-title"><b>{{ photo.title }}</b></p>
-                    <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
                     {% if photo.tags.all %}
                         <p><strong>Tags:</strong>
                             {% for tag in photo.tags.all %}
@@ -52,10 +53,11 @@
                             {% endfor %}
                         <p>
                         {% endif %}
+                    <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
                 </li>
-
                 {% endfor %}
-                </div>
+                </ul>
+                </section>
             </ul>
         </div>
     </div>

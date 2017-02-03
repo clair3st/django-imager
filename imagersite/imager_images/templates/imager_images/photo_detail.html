@@ -6,7 +6,7 @@
         <h1>Photo Detail</h1>
 </div>
 
-    <img style="width: 100px;" src="/media/{{ photo.image_file }}">
+    <img style="height: 100px;" src="/media/{{ photo.image_file }}">
     <p id="th-title"><b>{{ photo.title }}</b></p>
     <p>{{ photo.description}}</p>
     <p><b>Full size url: </b><a href="/media/{{ photo.image_file }}">Link</a></p>
@@ -21,6 +21,19 @@
     <p>
     {% endif %}
     <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
-<h1>Photos in the same category:</h1>
-
+{% if photo.tags.all %}
+<h3>Photos in the same category:</h3>
+<ul class="unstyled row">
+    {% for photo in similar_photos|slice:":5" %}
+        <li class="col-sm-4">
+            <a href="{% url 'photo_detail' photo.id %}">
+                    <img style="object-fit: cover; height: 100px;" src="/media/{{ photo.image_file }}">
+                    </a>
+                    <p id="th-title"><b>{{ photo.title }}</b></p>
+                    <p>{{ photo.description}}</p>
+                    <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
+        </li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% endblock body %}
