@@ -34,7 +34,7 @@ class Photo(models.Model):
     published = models.CharField(max_length=255,
                                  choices=SHARING,
                                  default='PUBLIC')
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     def __str__(self):
         """String representation of UserProfile."""
