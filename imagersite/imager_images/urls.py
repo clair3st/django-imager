@@ -13,7 +13,6 @@ from imager_images.views import (
     AlbumEdit,
     PhotoEdit,
     PhotoTagList,
-    # AlbumTagList,
 )
 
 urlpatterns = [
