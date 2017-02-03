@@ -132,6 +132,8 @@ class PhotoTagList(ListView):
     """The list view for tagged photos."""
 
     template_name = "imager_images/photos.html"
+    model = Photo
+    context_object_name = 'photos'
 
     def get_queryset(self):
         """Get queryset class method."""
@@ -150,7 +152,6 @@ class PhotoDetail(DetailView):
     template_name = "imager_images/photo_detail.html"
     model = Photo
     tags = Photo.tags.all()
-
 
 
 class AlbumDetail(DetailView):
