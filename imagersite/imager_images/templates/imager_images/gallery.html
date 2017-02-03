@@ -18,6 +18,7 @@
             <ul class="unstyled">
 
                 <div>
+                <p><b>Albums:</b></p>
                 {% for album in albums %}
 
                 <li class="col-sm-4">
@@ -36,6 +37,7 @@
                 </div>
 
                 <div>
+                <p><b>Photos:</b></p>
                 {% for photo in photos %}
                 
                 <li class="col-sm-4">
@@ -43,6 +45,12 @@
                     <img style="object-fit: cover; height: 100px;" src="/media/{{ photo.image_file }}"></a>
                     <p id="th-title"><b>{{ photo.title }}</b></p>
                     <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
+                    {% if photo.tags.all %}
+                        <p><b>Tags:</b> {% for tag in photo.tags.all %}
+                                {{ tag }}
+                            {% endfor %}
+                        </p>
+                    {% endif %}
                 </li>
 
                 {% endfor %}

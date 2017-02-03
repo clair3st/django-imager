@@ -15,8 +15,11 @@
                     </a>
                     <p id="th-title"><b>{{ photo.title }}</b></p>
                     <p>{{ photo.description}}</p>
-                    {% if tag %}
-                        <p>Tags: {{ tag }}</p>
+                    {% if photo.tags.all %}
+                        <p><b>Tags:</b> {% for tag in photo.tags.all %}
+                                {{ tag }}
+                            {% endfor %}
+                        </p>
                     {% endif %}
                     <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
                 </li>
