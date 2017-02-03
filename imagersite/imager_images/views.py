@@ -54,6 +54,7 @@ class PhotoAdd(LoginRequiredMixin, CreateView):
               'description',
               'published',
               'tags']
+
     success_url = reverse_lazy("library")
     login_url = reverse_lazy("login")
 
@@ -151,7 +152,16 @@ class PhotoDetail(DetailView):
 
     template_name = "imager_images/photo_detail.html"
     model = Photo
-    tags = Photo.tags.all()
+
+    def get_context_data(self, **kwargs):
+        """Get context class method."""
+        photo = Photo.objects.get(id=self.kwargs.get("pk"))
+        similar_photos = Photo.objects.filter(
+            tags__in=Photo.tags.all()
+        ).exclude(
+            id=self.kwargs.get("pk")
+        ).distinct()
+        return {"similar_photos": similar_photos, "photo": photo}
 
 
 class AlbumDetail(DetailView):
@@ -159,16 +169,3 @@ class AlbumDetail(DetailView):
 
     template_name = 'imager_images/album_detail.html'
     model = Album
-    # context_object_name = 'album'
-
-
-    # def get_context_data(self, pk, **kwargs):
-    #     """Get context class method."""
-    #     # context = super(PhotoDetail, self).get_context_data(**kwargs)
-    #     # context["pk"] = self.kwargs.get("pk")
-    #     similar_albums = Album.objects.filter(
-    #         tags__in=Photo.tags
-    #     ).exclude(
-    #         id=pk
-    #     ).distinct()
-    #     return similar_albums
