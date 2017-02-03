@@ -69,4 +69,3 @@ class Album(models.Model):
                                     related_name='cover',
                                     blank=True,
                                     null=True)
-    tags = TaggableManager()
