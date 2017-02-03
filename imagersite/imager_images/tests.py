@@ -246,6 +246,13 @@ class UserTestCase(TestCase):
         this_album.save()
         self.assertTrue(self.albums[0].published == "PUBLIC")
 
+    def test_photo_has_tag(self):
+        """Test photo has their published setting as Shared."""
+        this_photo = self.photos[0]
+        this_photo.tags = "Travel"
+        this_photo.save()
+        self.assertTrue(self.photos[0].tags == "Travel")
+
 
 class ProfileFrontEndTests(TestCase):
     """Functional and Unit tests for front end views."""
@@ -494,3 +501,56 @@ class ProfileFrontEndTests(TestCase):
         self.assertTrue("First Name" in response.rendered_content)
         self.assertTrue("Last Name" in response.rendered_content)
         self.assertTrue("Email" in response.rendered_content)
+
+    def test_edit_photo_has_tags(self):
+        """Test authenticated user gets the right html on edit photo page."""
+        photo = self.photos[0]
+        user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
+        self.client.force_login(user)
+        response = self.client.get("/images/photos/" + str(photo.pk) + "/edit/")
+        self.assertTrue("tags" in response.rendered_content)
+
+    def test_add_photo_has_tags(self):
+        """Test authenticated user gets the right html on edit photo page."""
+        photo = self.photos[0]
+        user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy('photo_add'))
+        self.assertTrue("tags" in response.rendered_content)
+
+    def test_photo_detail_has_tags(self):
+        """Test authenticated user gets the right html on edit photo page."""
+        photo = self.photos[0]
+        photo.tags = "Travel"
+        user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
+        self.client.force_login(user)
+        response = self.client.get("/images/photos/" + str(photo.pk))
+        self.assertTrue("tags" in response.rendered_content)
+
+    def test_photo_list_has_tags(self):
+        """Test authenticated user gets the right html on edit photo page."""
+        photo = self.photos[0]
+        photo.tags = "Travel"
+        user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy('photo_list'))
+        self.assertTrue("tags" in response.rendered_content)
+
+    def test_library_has_tags(self):
+        """Test authenticated user gets the right html on edit photo page."""
+        photo = self.photos[0]
+        photo.tags = "Travel"
+        user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy('library'))
+        self.assertTrue("tags" in response.rendered_content)

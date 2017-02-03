@@ -21,7 +21,7 @@
     <p>
     {% endif %}
     <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
-{% if photo.tags.all %}
+{% if similar_photos %}
 <h3>Photos in the same category:</h3>
 <ul class="unstyled row">
     {% for photo in similar_photos|slice:":5" %}

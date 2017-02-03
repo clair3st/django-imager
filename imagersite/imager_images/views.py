@@ -157,7 +157,7 @@ class PhotoDetail(DetailView):
         """Get context class method."""
         photo = Photo.objects.get(id=self.kwargs.get("pk"))
         similar_photos = Photo.objects.filter(
-            tags__in=Photo.tags.all()
+            tags__in=photo.tags.all()
         ).exclude(
             id=self.kwargs.get("pk")
         ).distinct()
