@@ -32,8 +32,7 @@ class AlbumAdd(LoginRequiredMixin, CreateView):
               'title',
               'description',
               'published',
-              'cover_photo',
-              'tags']
+              'cover_photo']
     success_url = reverse_lazy("library")
     login_url = reverse_lazy("login")
 
@@ -63,6 +62,7 @@ class PhotoAdd(LoginRequiredMixin, CreateView):
         self.object = form.save(commit=False)
         self.object.photographer = UserProfile.objects.get(user=self.request.user)
         self.object.save()
+        form.save_m2m()
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -75,8 +75,7 @@ class AlbumEdit(UserPassesTestMixin, UpdateView):
               'title',
               'description',
               'published',
-              'cover_photo',
-              'tags']
+              'cover_photo']
     success_url = reverse_lazy("library")
     raise_exception = True
 
@@ -117,22 +116,6 @@ class AlbumList(ListView):
         return Album.objects.filter(published="PUBLIC")
 
 
-class AlbumTagList(ListView):
-    """The list view for tagged albums."""
-
-    template_name = "image_images/albums.html"
-
-    def get_queryset(self):
-        """Get queryset class method."""
-        return Album.objects.filter(tags__slug=self.kwargs.get("slug")).all()
-
-    def get_context_data(self, **kwargs):
-        """Get context class method."""
-        context = super(AlbumTagList, self).get_context_data(**kwargs)
-        context["tag"] = self.kwargs.get("slug")
-        return context
-
-
 class PhotoList(ListView):
     """Class based view for Photo list."""
 
@@ -148,7 +131,7 @@ class PhotoList(ListView):
 class PhotoTagList(ListView):
     """The list view for tagged photos."""
 
-    template_name = "image_images/photos.html"
+    template_name = "imager_images/photos.html"
 
     def get_queryset(self):
         """Get queryset class method."""
@@ -168,16 +151,16 @@ class PhotoDetail(DetailView):
     model = Photo
     tags = Photo.tags.all()
 
-    def get_context_data(self, pk, **kwargs):
-        """Get context class method."""
-        # context = super(PhotoDetail, self).get_context_data(**kwargs)
-        # context["pk"] = self.kwargs.get("pk")
-        similar_photos = Photo.objects.filter(
-            tags__in=tags
-        ).exclude(
-            id=pk
-        ).distinct()
-        return similar_photos
+    # def get_context_data(self, pk, **kwargs):
+    #     """Get context class method."""
+    #     # context = super(PhotoDetail, self).get_context_data(**kwargs)
+    #     # context["pk"] = self.kwargs.get("pk")
+    #     similar_photos = Photo.objects.filter(
+    #         tags__in=tags
+    #     ).exclude(
+    #         id=pk
+    #     ).distinct()
+    #     return similar_photos
 
 
 class AlbumDetail(DetailView):
@@ -186,15 +169,15 @@ class AlbumDetail(DetailView):
     template_name = 'imager_images/album_detail.html'
     model = Album
     # context_object_name = 'album'
-    tags = Album.tags.all()
 
-    def get_context_data(self, pk, **kwargs):
-        """Get context class method."""
-        # context = super(PhotoDetail, self).get_context_data(**kwargs)
-        # context["pk"] = self.kwargs.get("pk")
-        similar_albums = Album.objects.filter(
-            tags__in=Photo.tags
-        ).exclude(
-            id=pk
-        ).distinct()
-        return similar_albums
+
+    # def get_context_data(self, pk, **kwargs):
+    #     """Get context class method."""
+    #     # context = super(PhotoDetail, self).get_context_data(**kwargs)
+    #     # context["pk"] = self.kwargs.get("pk")
+    #     similar_albums = Album.objects.filter(
+    #         tags__in=Photo.tags
+    #     ).exclude(
+    #         id=pk
+    #     ).distinct()
+    #     return similar_albums
