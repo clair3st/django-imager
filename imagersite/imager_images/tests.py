@@ -395,38 +395,30 @@ class ProfileFrontEndTests(TestCase):
 
     def test_album_add_view_status_ok(self):
         """Rendered html has staus 200, Unit Test."""
-        from imager_images.views import AlbumAdd
-        req = self.request.get(reverse_lazy("album_add"))
-        view = AlbumAdd.as_view()
-        response = view(req)
-        self.assertTrue(response.status_code == 200)
-
-    def test_album_add_route_is_status_ok(self):
-        """Funcional test for album add."""
-        response = self.client.get(reverse_lazy("album_add"))
-        self.assertTrue(response.status_code == 200)
+        new_user = self.user_login()
+        self.client.login(username=new_user.username, password='wordpass')
+        req = self.client.get(reverse_lazy("album_add"))
+        self.assertTrue(req.status_code == 200)
 
     def test_album_add_route_uses_right_templates(self):
         """Test Album add returns the right templates."""
+        new_user = self.user_login()
+        self.client.login(username=new_user.username, password='wordpass')
         response = self.client.get(reverse_lazy("album_add"))
         self.assertTemplateUsed(response, "imagersite/layout.html")
         self.assertTemplateUsed(response, "imager_images/create.html")
 
-    def test_photo_add_view_status_ok(self):
-        """Rendered html has staus 200, Unit Test."""
-        from imager_images.views import PhotoAdd
-        req = self.request.get(reverse_lazy("photo_add"))
-        view = PhotoAdd.as_view()
-        response = view(req)
-        self.assertTrue(response.status_code == 200)
-
     def test_photo_add_route_is_status_ok(self):
         """Funcional test for photo add."""
+        new_user = self.user_login()
+        self.client.login(username=new_user.username, password='wordpass')
         response = self.client.get(reverse_lazy("photo_add"))
         self.assertTrue(response.status_code == 200)
 
     def test_photo_add_route_uses_right_templates(self):
         """Test Album add returns the right templates."""
+        new_user = self.user_login()
+        self.client.login(username=new_user.username, password='wordpass')
         response = self.client.get(reverse_lazy("photo_add"))
         self.assertTemplateUsed(response, "imagersite/layout.html")
         self.assertTemplateUsed(response, "imager_images/create.html")
@@ -444,6 +436,8 @@ class ProfileFrontEndTests(TestCase):
         """Test authenticated user can get to edit photo page."""
         photo = self.photos[0]
         user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
         self.client.force_login(user)
         response = self.client.get("/images/photos/" + str(photo.pk) + "/edit/")
         self.assertTrue(response.status_code == 200)
@@ -452,14 +446,18 @@ class ProfileFrontEndTests(TestCase):
         """Test authenticated user can get to edit album page."""
         album = self.albums[0]
         user = self.user_login()
+        album.owner = user.profile
+        album.save()
         self.client.force_login(user)
-        response = self.client.get("/images/photos/" + str(album.pk) + "/edit/")
+        response = self.client.get("/images/albums/" + str(album.pk) + "/edit/")
         self.assertTrue(response.status_code == 200)
 
     def test_edit_photo_page_renders_correct_html(self):
         """Test authenticated user gets the right html on edit photo page."""
         photo = self.photos[0]
         user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
         self.client.force_login(user)
         response = self.client.get("/images/photos/" + str(photo.pk) + "/edit/")
         self.assertTrue("Save" in response.rendered_content)
@@ -468,8 +466,10 @@ class ProfileFrontEndTests(TestCase):
         """Test authenticated user gets correct html on edit album page."""
         album = self.albums[0]
         user = self.user_login()
+        album.owner = user.profile
+        album.save()
         self.client.force_login(user)
-        response = self.client.get("/images/photos/" + str(album.pk) + "/edit/")
+        response = self.client.get("/images/albums/" + str(album.pk) + "/edit/")
         self.assertTrue("Save" in response.rendered_content)
 
     def test_edit_profile_page_can_get_to_the_page(self):
