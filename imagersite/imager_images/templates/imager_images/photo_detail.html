@@ -10,7 +10,7 @@
     <p id="th-title"><b>{{ photo.title }}</b></p>
     <p>{{ photo.description}}</p>
     <p><b>Full size url: </b><a href="/media/{{ photo.image_file }}">Link</a></p>
-    {% if user == photo.photographer %}
+    {% if user == photo.photographer.user %}
     <a href="{% url 'photo_edit' photo.id %}">Edit</a>
     {% endif %}
     {% if photo.tags.all %}

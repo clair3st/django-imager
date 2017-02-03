@@ -151,16 +151,6 @@ class PhotoDetail(DetailView):
     model = Photo
     tags = Photo.tags.all()
 
-    # def get_context_data(self, pk, **kwargs):
-    #     """Get context class method."""
-    #     # context = super(PhotoDetail, self).get_context_data(**kwargs)
-    #     # context["pk"] = self.kwargs.get("pk")
-    #     similar_photos = Photo.objects.filter(
-    #         tags__in=tags
-    #     ).exclude(
-    #         id=pk
-    #     ).distinct()
-    #     return similar_photos
 
 
 class AlbumDetail(DetailView):
