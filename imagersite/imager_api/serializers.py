@@ -12,5 +12,5 @@ class PhotoSerializer(serializers.HyperlinkedModelSerializer):
 
         model = Photo
         fields = ('title', 'description', 'date_uploaded', 'date_modified',
-                  'date_published', 'published', 'image', 'photographer',
+                  'date_published', 'published', 'photographer',
                   'tags', 'image_file')
