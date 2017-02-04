@@ -1,3 +1,5 @@
+"""URL patterns."""
+
 from django.conf.urls import url
 from imager_api.views import PhotoViewSet
 
