@@ -7,10 +7,11 @@ from imager_images.models import Photo
 class PhotoSerializer(serializers.HyperlinkedModelSerializer):
     """Serialize Photo model data."""
 
+    photographer = serializers.ReadOnlyField(source='photographer.username')
+
     class Meta:
         """Photo model and fields."""
 
         model = Photo
-        fields = ('title', 'description', 'date_uploaded', 'date_modified',
-                  'date_published', 'published', 'photographer',
-                  'tags', 'image_file')
+        fields = ('photographer', 'title', 'description', 'date_uploaded',
+                  'date_modified', 'date_published', 'published', 'image_file')
