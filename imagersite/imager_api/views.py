@@ -3,7 +3,7 @@
 from rest_framework import viewsets, response, permissions
 from imager_images.models import Photo
 from imager_api.serializers import PhotoSerializer
-from snippets.permissions import IsOwnerOrReadOnly
+from imager_api.permissions import IsOwnerOrReadOnly
 
 
 class PhotoViewSet(viewsets.ModelViewSet):
@@ -11,11 +11,11 @@ class PhotoViewSet(viewsets.ModelViewSet):
 
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly,)
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+    #                       IsOwnerOrReadOnly,)
 
-    def photo_list(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs):
         """Get photos owned by the user."""
         queryset = Photo.objects.filter(photographer=request.user.profile)
-        serializer = PhotoSerializer(queryset, many=True)
+        serializer = PhotoSerializer(context={'request': request}, many=True)
         return response.Response(serializer.data)
