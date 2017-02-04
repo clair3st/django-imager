@@ -28,8 +28,8 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, name="login"),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^profile/', include("imager_profile.urls")),
-    url(r"^images/", include('imager_images.urls')
-    url(r'api/', inculed('imager_api.urls')))
+    url(r"^images/", include('imager_images.urls')),
+    url(r'^api/', include('imager_api.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
