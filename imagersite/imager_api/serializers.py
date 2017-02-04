@@ -7,9 +7,6 @@ from imager_images.models import Photo
 class PhotoSerializer(serializers.HyperlinkedModelSerializer):
     """Serialize Photo model data."""
 
-    highlight = serializers.HyperlinkedIdentityField(
-        view_name='snippet-highlight', format='html')
-
     class Meta:
         """Photo model and fields."""
 
