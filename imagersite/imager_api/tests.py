@@ -33,15 +33,6 @@ class PhotoFactory(factory.django.DjangoModelFactory):
     title = factory.Sequence(lambda n: "Photo{}".format(n))
 
 
-class UserTestCase(TestCase):
-    """The User Model test class."""
-
-    def setUp(self):
-        """The setup and buildout for uses and photos."""
-        self.users = [UserFactory.create() for i in range(20)]
-        self.photos = [PhotoFactory.create() for i in range(20)]
-
-
 class ApiFrontEndTests(TestCase):
     """Functional and Unit tests for api view."""
 
@@ -65,7 +56,7 @@ class ApiFrontEndTests(TestCase):
         """Funcional test for api."""
         new_user = self.user_login()
         self.client.login(username=new_user.username, password='wordpass')
-        response = self.client.get('/api/v1')
+        response = self.client.get(reverse_lazy('api_list'))
         response.user = new_user
         self.assertTrue(response.status_code == 200)
 
@@ -76,11 +67,37 @@ class ApiFrontEndTests(TestCase):
         photo.photographer = user.profile
         photo.save()
         self.client.force_login(user)
-        response = self.client.get('/api/v1')
+        response = self.client.get(reverse_lazy('api_list'))
         self.assertTrue(b"Photo" in response.rendered_content)
 
     def test_unauthenticated_user_requesting_api(self):
         """Test not logged in user gets an error requesting api."""
         with self.assertRaises(AttributeError):
-            self.client.get('/api/v1')
+            self.client.get(reverse_lazy('api_list'))
 
+    def test_one_user_cannot_see_photos_from_other_user(self):
+        """Test that one logged in user cannot see the photos of another user in api view."""
+        this_photo = self.photos[0]
+        this_photo.title = "Joe's Photo"
+        this_photo.save()
+        this_user = self.users[0]
+        this_user.save()
+        this_photo.photographer = this_user.profile
+        this_photo.save()
+        user2 = self.users[1]
+        self.client.force_login(user2)
+        response = self.client.get(reverse_lazy('api_list'))
+        self.assertFalse(b"Joe's Photo" in response.rendered_content)
+
+    def test_other_user_can_see_his_photos(self):
+        """Test that the other user can see his own photo."""
+        this_photo = self.photos[0]
+        this_photo.title = "Joe's Photo"
+        this_photo.save()
+        this_user = self.users[0]
+        this_user.save()
+        this_photo.photographer = this_user.profile
+        this_photo.save()
+        self.client.force_login(this_user)
+        response = self.client.get(reverse_lazy('api_list'))
+        self.assertTrue(b"Joe's Photo" in response.rendered_content)
