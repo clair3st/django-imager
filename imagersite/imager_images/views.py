@@ -36,6 +36,13 @@ class AlbumAdd(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("library")
     login_url = reverse_lazy("login")
 
+    def get_form(self):
+        """Retrieve form and make sure can only see own photos."""
+        form = super(AlbumAdd, self).get_form()
+        form.fields['cover_photo'].queryset = self.request.user.profile.photo.all()
+        form.fields['contents'].queryset = self.request.user.profile.photo.all()
+        return form
+
     def form_valid(self, form):
         """Form should update the photographer to the user."""
         self.object = form.save(commit=False)
@@ -68,19 +75,28 @@ class AlbumEdit(UserPassesTestMixin, UpdateView):
     """Class based view for editing an album."""
 
     template_name = "imager_images/update.html"
+    success_url = reverse_lazy("library")
     model = Album
     fields = ['contents',
               'title',
               'description',
               'published',
               'cover_photo']
-    success_url = reverse_lazy("library")
     raise_exception = True
 
     def test_func(self):
         """Override the userpassestest test_func."""
         album = Album.objects.get(pk=self.kwargs['pk'])
         return album.owner.user == self.request.user
+
+    def get_form(self):
+        """Retrieve form and make sure can only see own photos."""
+        form = super(AlbumEdit, self).get_form()
+        form.fields['cover_photo'].queryset = self.request.user.profile.photo.all()
+        form.fields['contents'].queryset = self.request.user.profile.photo.all()
+        return form
+
+
 
 
 class PhotoEdit(UserPassesTestMixin, UpdateView):
