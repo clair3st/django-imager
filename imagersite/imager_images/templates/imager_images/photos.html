@@ -1,5 +1,5 @@
 {% extends 'imagersite/layout.html' %}
-
+{% load staticfiles %}
 
 {% block body %}
 <div class="container">
@@ -35,11 +35,17 @@
         </div>
     </div>
             <div class="container text-center pages">
-            Pages:
-                {% for page_num in paginator.page_range %}
-                <a href="?page={{ page_num }}">{{ page_num }}</a>
-            {% endfor %}
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}"><img height="20" src="{% static 'imagersite/back-arrow.png' %}"></a>   
+            {% endif %}
+
+                {{ page_obj.number }} of {{ paginator.num_pages }}
+
+            {% if page_obj.has_next %}    
+            <a href="?page={{ page_obj.next_page_number }}"><img height="20" src="{% static 'imagersite/next-arrow.png' %}"></a>
+            {% endif %}
             </div>
+
 </div>
 
 {% endblock body %}
