@@ -111,6 +111,7 @@ class AlbumList(ListView):
     template_name = "imager_images/albums.html"
     model = Album
     context_object_name = 'albums'
+    paginate_by = 4
 
     def get_queryset(self):
         """Get public albums."""
@@ -123,6 +124,7 @@ class PhotoList(ListView):
     template_name = "imager_images/photos.html"
     model = Photo
     context_object_name = 'photos'
+    paginate_by = 4
 
     def get_queryset(self):
         """Get public photos."""
