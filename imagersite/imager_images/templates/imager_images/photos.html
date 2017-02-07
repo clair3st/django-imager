@@ -9,12 +9,12 @@
             {% if tag %}
             | {{tag}}
             {% endif %}
-
             </h1>
+
             <ul class="unstyled">
 
 {% for photo in photos %}
-                <li class="col-sm-4">
+                <li class="col-sm-3">
                     <a href="{% url 'photo_detail' photo.id %}">
                     <img style="object-fit: cover; height: 100px;" src="/media/{{ photo.image_file }}">
                     </a>
@@ -28,15 +28,18 @@
                         <p>
                         {% endif %}
                     <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
-                </li>
-    
+                </li>    
 {% endfor %}
-    {% for page_num in paginator.page_range %}
-        <li><a href="?page={{ page_num }}">Page {{ page_num }}</a></li>
-    {% endfor %}
             </ul>
+
         </div>
     </div>
+            <div class="container text-center pages">
+            Pages:
+                {% for page_num in paginator.page_range %}
+                <a href="?page={{ page_num }}">{{ page_num }}</a>
+            {% endfor %}
+            </div>
 </div>
 
 {% endblock body %}

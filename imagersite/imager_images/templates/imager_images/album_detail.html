@@ -19,7 +19,7 @@
 
                 {% for photo in album.contents.all %}
 
-                <li class="col-sm-4">
+                <li class="col-sm-3">
 
                     <a href="{% url 'photo_detail' photo.id %}">
                     <img style="object-fit: cover; height: 100px;" src="/media/{{ photo.image_file }}"></a>

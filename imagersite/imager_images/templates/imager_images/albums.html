@@ -9,7 +9,7 @@
             <ul class="unstyled">
 
 {% for album in albums %}
-                <li class="col-sm-4">
+                <li class="col-sm-3">
 
                     <a href="{% url 'album_detail' album.id %}">
 
@@ -25,11 +25,14 @@
                 </li>
 
 {% endfor %}
-            {% for page_num in paginator.page_range %}
-        <li><a href="?page={{ page_num }}">Page {{ page_num }}</a></li>
-        {% endfor %}
             </ul>
         </div>
+    </div>
+    <div class="container text-center pages">
+            Pages:
+                {% for page_num in paginator.page_range %}
+                <a href="?page={{ page_num }}">{{ page_num }}</a>
+            {% endfor %}
     </div>
 </div>
 
