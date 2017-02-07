@@ -7,6 +7,7 @@ from django.views.generic import ListView, DetailView, CreateView, TemplateView,
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import get_object_or_404
 
 
 class LibraryView(TemplateView):
@@ -97,8 +98,6 @@ class AlbumEdit(UserPassesTestMixin, UpdateView):
         return form
 
 
-
-
 class PhotoEdit(UserPassesTestMixin, UpdateView):
     """Class based view for editing a photo."""
 
@@ -141,16 +140,27 @@ class PhotoList(ListView):
         return Photo.objects.filter(published="PUBLIC")
 
 
-class PhotoDetail(DetailView):
+class PhotoDetail(UserPassesTestMixin, DetailView):
     """Class based view for Photo Detail."""
 
     template_name = "imager_images/photo_detail.html"
     model = Photo
+    raise_exception = True
+
+    def test_func(self):
+        """Override the userpassestest test_func."""
+        photo = get_object_or_404(Photo, id=self.kwargs['pk'])
+        return photo.published == 'PUBLIC' or photo.photographer.user == self.request.user
 
 
-class AlbumDetail(DetailView):
+class AlbumDetail(UserPassesTestMixin, DetailView):
     """Class based view for Album detail."""
 
     template_name = 'imager_images/album_detail.html'
     model = Album
-    # context_object_name = 'album'
+    raise_exception = True
+
+    def test_func(self):
+        """Override the userpassestest test_func."""
+        album = get_object_or_404(Album, id=self.kwargs['pk'])
+        return album.published == 'PUBLIC' or album.owner.user == self.request.user
