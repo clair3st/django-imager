@@ -8,6 +8,10 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import UserPassesTestMixin
 
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
+
 
 class LibraryView(TemplateView):
     """Class based view for Library."""
@@ -166,8 +170,27 @@ class PhotoDetail(DetailView):
         return {"similar_photos": similar_photos, "photo": photo}
 
 
-class AlbumDetail(DetailView):
+class AlbumDetail(ListView):
     """Class based view for Album detail."""
 
     template_name = 'imager_images/album_detail.html'
     model = Album
+    paginate_by = 4
+
+    def get_context_data(self):
+        """Get albums and photos and return them."""
+        album = Album.objects.get(id=self.kwargs['pk'])
+        photos = album.contents.all()
+
+        paginator = Paginator(photos, self.paginate_by)
+
+        page = self.request.GET.get('page')
+
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+
+        return {'album': album, 'photo': pages}
