@@ -1,17 +1,16 @@
 """View API endpoint."""
 
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 from imager_images.models import Photo
 from imager_api.serializers import PhotoSerializer
-from imager_api.permissions import IsOwnerOrReadOnly
+from django.urls import reverse_lazy
 
 
 class PhotoViewSet(viewsets.ModelViewSet):
     """API endpoint that allows users to be viewed or edited."""
 
     serializer_class = PhotoSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly,)
+    login_url = reverse_lazy("login")
 
     def get_queryset(self):
         """Get queryset for photographer."""
