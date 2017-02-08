@@ -45,7 +45,7 @@ class AlbumAdd(LoginRequiredMixin, CreateView):
         return form
 
     def form_valid(self, form):
-        """Form should update the photographer to the user."""
+        """Form should update the owner to the user."""
         self.object = form.save(commit=False)
         self.object.owner = UserProfile.objects.get(user=self.request.user)
         self.object.save()
