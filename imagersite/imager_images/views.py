@@ -17,12 +17,31 @@ class LibraryView(TemplateView):
     """Class based view for Library."""
 
     template_name = 'imager_images/gallery.html'
-
+    # paginate_by = 4
     def get_context_data(self):
         """Show a users galleries and photos."""
         the_user = self.request.user
         user_photos = Photo.objects.filter(photographer=the_user.profile)
+        paginator = Paginator(user_photos, 8)
+        page = self.request.GET.get('lower')
+
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+
         user_albums = Album.objects.filter(owner=the_user.profile)
+        paginator = Paginator(user_albums, 4)
+        page = self.request.GET.get('upper')
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+
         context = {'albums': user_albums, 'photos': user_photos}
         return context
 
