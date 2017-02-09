@@ -37,7 +37,7 @@
                 </ul>
                 <div class="container text-center pages">
                 {% if albums.has_previous %}
-                <a href="?albums{{ albums.previous_page_number }}"><img height="20" src="{% static 'imagersite/back-arrow.png' %}"></a>   
+                <a href="?albums={{ albums.previous_page_number }}"><img height="20" src="{% static 'imagersite/back-arrow.png' %}"></a>   
                 {% endif %}
 
                     {{ albums.number }} of {{ albums.paginator.num_pages }}
@@ -74,7 +74,7 @@
                 </ul>
                 <div class="container text-center pages">
                 {% if photos.has_previous %}
-                <a href="?photos{{ photos.previous_page_number }}"><img height="20" src="{% static 'imagersite/back-arrow.png' %}"></a>   
+                <a href="?photos={{ photos.previous_page_number }}"><img height="20" src="{% static 'imagersite/back-arrow.png' %}"></a>   
                 {% endif %}
 
                     {{ photos.number }} of {{ photos.paginator.num_pages }}
