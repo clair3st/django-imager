@@ -51,7 +51,7 @@
                 <h3 class="offset2">Photos</h3>
                 <section class="row offset2">
                 <ul class="unstyled">
-                {% for photo in photos %}
+                {% for photo in lower %}
                 
                 <li class="col-sm-3">
                 <a href="{% url 'photo_detail' photo.id %}">
@@ -67,22 +67,22 @@
                     <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
                 </li>
                 {% endfor %}
-                </ul>
-                <div class="container text-center pages">
-                {% if lower.has_previous %}
-                <a href="?lower{{ page_obj.previous_page_number }}"><img height="20" src="{% static 'imagersite/back-arrow.png' %}"></a>   
-                {% endif %}
-
-                    {{ page_obj.number }} of {{ paginator.num_pages }}
-
-                {% if lower.has_next %}    
-                <a href="?lower={{ page_obj.next_page_number }}"><img height="20" src="{% static 'imagersite/next-arrow.png' %}"></a>
-                {% endif %}
-                </div>
                 </section>
             </ul>
         </div>
     </div>
+                </ul>
+                <div class="container text-center pages">
+                {% if lower.has_previous %}
+                <a href="?lower{{ lower.previous_page_number }}"><img height="20" src="{% static 'imagersite/back-arrow.png' %}"></a>   
+                {% endif %}
+
+                    {{ lower.number }} of {{ lower.paginator.num_pages }}
+
+                {% if lower.has_next %}    
+                <a href="?lower={{ lower.next_page_number }}"><img height="20" src="{% static 'imagersite/next-arrow.png' %}"></a>
+                {% endif %}
+                </div>
 </div>
 
 {% endblock body %}
