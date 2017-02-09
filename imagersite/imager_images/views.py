@@ -23,7 +23,7 @@ class LibraryView(TemplateView):
         the_user = self.request.user
         user_photos = Photo.objects.filter(photographer=the_user.profile)
         paginator = Paginator(user_photos, 4)
-        page = self.request.GET.get('lower')
+        page = self.request.GET.get('photos')
 
         try:
             pages = paginator.page(page)
@@ -34,15 +34,15 @@ class LibraryView(TemplateView):
 
         user_albums = Album.objects.filter(owner=the_user.profile)
         paginator1 = Paginator(user_albums, 4)
-        page1 = self.request.GET.get('upper')
+        album_page = self.request.GET.get('albums')
         try:
-            pages1 = paginator1.page(page1)
+            album_pages = paginator1.page(album_page)
         except PageNotAnInteger:
-            pages1 = paginator1.page(1)
+            album_pages = paginator1.page(1)
         except EmptyPage:
-            pages1 = paginator.page(paginator.num_pages)
+            album_pages = paginator.page(paginator.num_pages)
 
-        context = {'albums': user_albums, 'lower': pages, 'upper': pages1}
+        context = {'photos': pages, 'albums': album_pages}
         return context
 
 
