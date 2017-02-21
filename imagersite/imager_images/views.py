@@ -60,7 +60,9 @@ class PhotoAdd(LoginRequiredMixin, CreateView):
     fields = ['image_file',
               'title',
               'description',
-              'published']
+              'published',
+              'tags']
+
     success_url = reverse_lazy("library")
     login_url = reverse_lazy("login")
 
@@ -69,6 +71,7 @@ class PhotoAdd(LoginRequiredMixin, CreateView):
         self.object = form.save(commit=False)
         self.object.photographer = UserProfile.objects.get(user=self.request.user)
         self.object.save()
+        form.save_m2m()
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -106,7 +109,8 @@ class PhotoEdit(UserPassesTestMixin, UpdateView):
     fields = ['image_file',
               'title',
               'description',
-              'published']
+              'published',
+              'tags']
     success_url = reverse_lazy("library")
     raise_exception = True
 
@@ -140,6 +144,24 @@ class PhotoList(ListView):
         return Photo.objects.filter(published="PUBLIC")
 
 
+class PhotoTagList(ListView):
+    """The list view for tagged photos."""
+
+    template_name = "imager_images/photos.html"
+    model = Photo
+    context_object_name = 'photos'
+
+    def get_queryset(self):
+        """Get queryset class method."""
+        return Photo.objects.filter(tags__slug=self.kwargs.get("slug")).all()
+
+    def get_context_data(self, **kwargs):
+        """Get context class method."""
+        context = super(PhotoTagList, self).get_context_data(**kwargs)
+        context["tag"] = self.kwargs.get("slug")
+        return context
+
+
 class PhotoDetail(UserPassesTestMixin, DetailView):
     """Class based view for Photo Detail."""
 
@@ -151,6 +173,16 @@ class PhotoDetail(UserPassesTestMixin, DetailView):
         """Override the userpassestest test_func."""
         photo = get_object_or_404(Photo, id=self.kwargs['pk'])
         return photo.published == 'PUBLIC' or photo.photographer.user == self.request.user
+
+    def get_context_data(self, **kwargs):
+        """Get context class method."""
+        photo = Photo.objects.get(id=self.kwargs.get("pk"))
+        similar_photos = Photo.objects.filter(
+            tags__in=photo.tags.all()
+        ).exclude(
+            id=self.kwargs.get("pk")
+        ).distinct()
+        return {"similar_photos": similar_photos, "photo": photo}
 
 
 class AlbumDetail(UserPassesTestMixin, DetailView):

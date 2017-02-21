@@ -3,6 +3,7 @@
 from django.db import models
 from imager_profile.models import UserProfile
 from django.utils.encoding import python_2_unicode_compatible
+from taggit.managers import TaggableManager
 
 # Create yo  models here.
 
@@ -33,6 +34,7 @@ class Photo(models.Model):
     published = models.CharField(max_length=255,
                                  choices=SHARING,
                                  default='PUBLIC')
+    tags = TaggableManager(blank=True)
 
     def __str__(self):
         """String representation of UserProfile."""

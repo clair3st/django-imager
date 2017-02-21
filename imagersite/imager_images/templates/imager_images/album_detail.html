@@ -25,6 +25,14 @@
                     <img style="object-fit: cover; height: 100px;" src="/media/{{ photo.image_file }}"></a>
                     <p id="th-title"><b>{{ photo.title }}</b></p>
                     <p>{{ photo.description}}</p>
+                    {% if photo.tags.all %}
+                        <p><strong>Tags:</strong>
+                            {% for tag in photo.tags.all %}
+                                <a href="{% url 'photo_tag' tag.slug %}">{{ tag }}</a>
+                            {% endfor %}
+                        <p>
+                        {% endif %}
+                    <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
 
                 </li>
 
