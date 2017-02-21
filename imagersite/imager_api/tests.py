@@ -72,11 +72,14 @@ class ApiFrontEndTests(TestCase):
 
     def test_unauthenticated_user_requesting_api(self):
         """Test not logged in user gets an error requesting api."""
-        with self.assertRaises(AttributeError):
-            self.client.get(reverse_lazy('api_list'))
+        response = self.client.get(reverse_lazy('api_list'))
+        self.assertTrue(b"Authentication credentials were not provided." in response.rendered_content)
 
     def test_one_user_cannot_see_photos_from_other_user(self):
-        """Test that one logged in user cannot see the photos of another user in api view."""
+        """Test that one logged in user cannot see the photos...
+
+        of another user in api view.
+        """
         this_photo = self.photos[0]
         this_photo.title = "Joe's Photo"
         this_photo.save()
