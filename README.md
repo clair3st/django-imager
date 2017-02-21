@@ -60,6 +60,7 @@ The model also supports the following API:
 - Date Uploaded, Date Modified and Date Published
 - Photographer - linked to a UserProfile
 - Shared or Public
+- tags 
 
 **The `Album` model contains:**
 
@@ -93,6 +94,7 @@ The model also supports the following API:
 - `/images/photos/<id>/edit` Edit a given photo.
 - `/images/albums/<id>/edit` Edit a given album.
 - `/profile/edit` Edit a logged in user profile.
+- `/images/photos/<tag>` List of photos with an associated <tag>.
 
 
 ##Running Tests

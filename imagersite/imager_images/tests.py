@@ -6,6 +6,10 @@ import factory
 from django.test import Client, RequestFactory
 from django.urls import reverse_lazy
 import datetime
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
+
 # Create your tests here.
 
 
@@ -43,7 +47,6 @@ class AlbumFactory(factory.django.DjangoModelFactory):
         model = Album
 
     description = factory.Sequence(lambda n: "Album{}".format(n))
-    # cover_photo = SimpleUploadFile(name'test_image.jpg', content=open(IMG_PATH, 'rb').read(), content_type='image/jpeg'))
     title = "Some Image"
 
 
@@ -246,6 +249,13 @@ class UserTestCase(TestCase):
         this_album.save()
         self.assertTrue(self.albums[0].published == "PUBLIC")
 
+    def test_photo_has_tag(self):
+        """Test photo has their published setting as Shared."""
+        this_photo = self.photos[0]
+        this_photo.tags = "Travel"
+        this_photo.save()
+        self.assertTrue(self.photos[0].tags == "Travel")
+
 
 class ProfileFrontEndTests(TestCase):
     """Functional and Unit tests for front end views."""
@@ -350,18 +360,6 @@ class ProfileFrontEndTests(TestCase):
         new_user.save()
         return new_user
 
-    # def test_library_view_status_ok(self):
-    #     """Rendered html has staus 200, Unit Test."""
-    #     from imager_images.views import LibraryView
-    #     import pdb; pdb.set_trace()
-    #     new_user = self.user_login()
-    #     self.client.login(username=new_user.username, password='wordpass')
-    #     req = self.client.get(reverse_lazy("library"))
-    #     req.user = new_user
-    #     view = LibraryView.as_view()
-    #     response = view(req)
-    #     self.assertTrue(response.status_code == 200)
-
     def test_library_route_is_status_ok(self):
         """Funcional test for library."""
         new_user = self.user_login()
@@ -395,38 +393,30 @@ class ProfileFrontEndTests(TestCase):
 
     def test_album_add_view_status_ok(self):
         """Rendered html has staus 200, Unit Test."""
-        from imager_images.views import AlbumAdd
-        req = self.request.get(reverse_lazy("album_add"))
-        view = AlbumAdd.as_view()
-        response = view(req)
-        self.assertTrue(response.status_code == 200)
-
-    def test_album_add_route_is_status_ok(self):
-        """Funcional test for album add."""
-        response = self.client.get(reverse_lazy("album_add"))
-        self.assertTrue(response.status_code == 200)
+        new_user = self.user_login()
+        self.client.login(username=new_user.username, password='wordpass')
+        req = self.client.get(reverse_lazy("album_add"))
+        self.assertTrue(req.status_code == 200)
 
     def test_album_add_route_uses_right_templates(self):
         """Test Album add returns the right templates."""
+        new_user = self.user_login()
+        self.client.login(username=new_user.username, password='wordpass')
         response = self.client.get(reverse_lazy("album_add"))
         self.assertTemplateUsed(response, "imagersite/layout.html")
         self.assertTemplateUsed(response, "imager_images/create.html")
 
-    def test_photo_add_view_status_ok(self):
-        """Rendered html has staus 200, Unit Test."""
-        from imager_images.views import PhotoAdd
-        req = self.request.get(reverse_lazy("photo_add"))
-        view = PhotoAdd.as_view()
-        response = view(req)
-        self.assertTrue(response.status_code == 200)
-
     def test_photo_add_route_is_status_ok(self):
         """Funcional test for photo add."""
+        new_user = self.user_login()
+        self.client.login(username=new_user.username, password='wordpass')
         response = self.client.get(reverse_lazy("photo_add"))
         self.assertTrue(response.status_code == 200)
 
     def test_photo_add_route_uses_right_templates(self):
         """Test Album add returns the right templates."""
+        new_user = self.user_login()
+        self.client.login(username=new_user.username, password='wordpass')
         response = self.client.get(reverse_lazy("photo_add"))
         self.assertTemplateUsed(response, "imagersite/layout.html")
         self.assertTemplateUsed(response, "imager_images/create.html")
@@ -444,53 +434,244 @@ class ProfileFrontEndTests(TestCase):
         """Test authenticated user can get to edit photo page."""
         photo = self.photos[0]
         user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
         self.client.force_login(user)
-        response = self.client.get("/images/photos/" + str(photo.pk) + "/edit/")
+        response = self.client.get(
+            "/images/photos/" + str(photo.pk) + "/edit/")
         self.assertTrue(response.status_code == 200)
 
     def test_logged_in_user_can_get_to_edit_album_page(self):
         """Test authenticated user can get to edit album page."""
         album = self.albums[0]
         user = self.user_login()
+        album.owner = user.profile
+        album.save()
         self.client.force_login(user)
-        response = self.client.get("/images/photos/" + str(album.pk) + "/edit/")
+        response = self.client.get(
+            "/images/albums/" + str(album.pk) + "/edit/")
         self.assertTrue(response.status_code == 200)
 
     def test_edit_photo_page_renders_correct_html(self):
         """Test authenticated user gets the right html on edit photo page."""
         photo = self.photos[0]
         user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
         self.client.force_login(user)
-        response = self.client.get("/images/photos/" + str(photo.pk) + "/edit/")
+        response = self.client.get(
+            "/images/photos/" + str(photo.pk) + "/edit/")
         self.assertTrue("Save" in response.rendered_content)
 
     def test_edit_album_page_renders_correct_html(self):
         """Test authenticated user gets correct html on edit album page."""
         album = self.albums[0]
         user = self.user_login()
+        album.owner = user.profile
+        album.save()
         self.client.force_login(user)
-        response = self.client.get("/images/photos/" + str(album.pk) + "/edit/")
+        response = self.client.get(
+            "/images/albums/" + str(album.pk) + "/edit/")
         self.assertTrue("Save" in response.rendered_content)
 
     def test_edit_profile_page_can_get_to_the_page(self):
-        """Test authenticated user gets the correct html on edit profile page."""
+        """Test user gets the correct html on edit profile page."""
         user = self.user_login()
         self.client.force_login(user)
         response = self.client.get(reverse_lazy("profile_edit"))
         self.assertTrue(response.status_code == 200)
 
     def test_edit_profile_page_renders_correct_html(self):
-        """Test authenticated user gets the correct html on edit profile page."""
+        """Test user gets the correct html on edit profile page."""
         user = self.user_login()
         self.client.force_login(user)
         response = self.client.get(reverse_lazy("profile_edit"))
         self.assertTrue("Edit Profile" in response.rendered_content)
 
     def test_edit_profile_page_has_new_form_fields(self):
-        """Test authenticated user sees the new form fields to enter on edit profile page."""
+        """Test user sees the new form fields to enter on edit profile page."""
         user = self.user_login()
         self.client.force_login(user)
         response = self.client.get(reverse_lazy("profile_edit"))
         self.assertTrue("First Name" in response.rendered_content)
         self.assertTrue("Last Name" in response.rendered_content)
         self.assertTrue("Email" in response.rendered_content)
+
+    def test_edit_photo_has_tags(self):
+        """Test authenticated user gets the right html on edit photo page."""
+        photo = self.photos[0]
+        user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
+        self.client.force_login(user)
+        response = self.client.get("/images/photos/" + str(photo.pk) + "/edit/")
+        self.assertTrue("tags" in response.rendered_content)
+
+    def test_add_photo_has_tags(self):
+        """Test authenticated user gets the right html on edit photo page."""
+        photo = self.photos[0]
+        user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy('photo_add'))
+        self.assertTrue("tags" in response.rendered_content)
+
+    def test_photo_detail_has_tags(self):
+        """Test authenticated user gets the right html on edit photo page."""
+        photo = self.photos[0]
+        photo.tags = "Travel"
+        user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
+        self.client.force_login(user)
+        response = self.client.get("/images/photos/" + str(photo.pk))
+        self.assertTrue("tags" in response.rendered_content)
+
+    def test_photo_list_has_tags(self):
+        """Test authenticated user gets the right html on edit photo page."""
+        photo = self.photos[0]
+        photo.tags = "Travel"
+        user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy('photo_list'))
+        self.assertTrue("tags" in response.rendered_content)
+
+    def test_library_has_tags(self):
+        """Test authenticated user gets the right html on edit photo page."""
+        photo = self.photos[0]
+        photo.tags = "Travel"
+        user = self.user_login()
+        photo.photographer = user.profile
+        photo.save()
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy('library'))
+        self.assertTrue("tags" in response.rendered_content)
+
+    def test_pagination_on_album_list(self):
+        """Test authenticated user sees pagination on filled Album List page."""
+        user = self.user_login()
+        for album in self.albums:
+            user.profile.albums.add(album)
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy("album_list"))
+        self.assertTrue("1 of 2" in response.rendered_content)
+
+    def test_pagination_on_photo_list(self):
+        """Test authenticated user sees pagination on filled Photo List page."""
+        user = self.user_login()
+        for photo in self.photos:
+            photo.photographer = user.profile
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy("photo_list"))
+        self.assertTrue("1 of 2" in response.rendered_content)
+
+    def test_pagination_on_album_detail(self):
+        """Test authenticated user sees pagination on Album detail page."""
+        user = self.user_login()
+        self.albums[0].owner = user.profile
+        for pic in self.photos:
+            pic.photographer = user.profile
+        self.albums[0].contents.set([pic for pic in self.photos])
+        self.albums[0].save()
+        self.client.force_login(user)
+        response = self.client.get("/images/albums/" + str(self.albums[0].pk))
+        self.assertTrue("1 of 2" in response.rendered_content)
+
+    def test_private_photos_cant_view_by_others_403_error(self):
+        """Test private photos cant be viewed."""
+        photo = self.photos[0]
+        photo.photographer = self.users[0].profile
+        photo.published = 'PRIVATE'
+        photo.save()
+        self.client.force_login(self.users[1])
+        response = self.client.get('/images/photos/' + str(photo.pk))
+        self.assertTrue(response.status_code == 403)
+
+    def test_private_photos_can_be_viewed_by_owner(self):
+        """Test photos that are private aren't 403 for owners."""
+        photo = self.photos[0]
+        photo.photographer = self.users[0].profile
+        photo.published = 'PRIVATE'
+        photo.save()
+        self.client.force_login(self.users[0])
+        response = self.client.get('/images/photos/' + str(photo.pk))
+        self.assertTrue(response.status_code == 200)
+
+    def test_private_albums_cant_view_by_others_403_error(self):
+        """Test private albums cant be viewed."""
+        album = self.albums[0]
+        album.owner = self.users[0].profile
+        album.published = 'PRIVATE'
+        album.save()
+        self.client.force_login(self.users[1])
+        response = self.client.get('/images/albums/' + str(album.pk))
+        self.assertTrue(response.status_code == 403)
+
+    def test_private_albums_can_be_viewed_by_owner(self):
+        """Test albums that are private aren't 403 for owners."""
+        album = self.albums[0]
+        album.owner = self.users[0].profile
+        album.published = 'PRIVATE'
+        album.save()
+        self.client.force_login(self.users[0])
+        response = self.client.get('/images/albums/' + str(album.pk))
+        self.assertTrue(response.status_code == 200)
+
+    def test_albums_cant_be_edited_by_others(self):
+        """Test albums that are owned by others can't be edited."""
+        album = self.albums[0]
+        album.owner = self.users[0].profile
+        album.save()
+        self.client.force_login(self.users[1])
+        response = self.client.get(
+            '/images/albums/' + str(album.pk) + '/edit/')
+        self.assertTrue(response.status_code == 403)
+
+    def test_photos_cant_be_edited_by_others(self):
+        """Test photos that are owned by others can't be edited."""
+        photo = self.photos[0]
+        photo.photographer = self.users[0].profile
+        photo.save()
+        self.client.force_login(self.users[1])
+        response = self.client.get(
+            '/images/photos/' + str(photo.pk) + '/edit/')
+        self.assertTrue(response.status_code == 403)
+
+    def test_no_edit_button_on_photo_detail(self):
+        """Test no edit button on photo detail when not owner."""
+        photo = self.photos[0]
+        photo.photographer = self.users[0].profile
+        photo.save()
+        self.client.force_login(self.users[1])
+        response = self.client.get('/images/photos/' + str(photo.pk))
+        self.assertFalse('Edit' in response.rendered_content)
+
+    def test_edit_button_on_photo_detail(self):
+        """Test edit button on photo detail when owner."""
+        photo = self.photos[0]
+        photo.photographer = self.users[0].profile
+        photo.save()
+        self.client.force_login(self.users[0])
+        response = self.client.get('/images/photos/' + str(photo.pk))
+        self.assertTrue('Edit' in response.rendered_content)
+
+    def test_no_edit_button_on_album_detail(self):
+        """Test no edit button on album detail when not owner."""
+        album = self.albums[0]
+        album.owner = self.users[0].profile
+        album.save()
+        self.client.force_login(self.users[1])
+        response = self.client.get('/images/albums/' + str(album.pk))
+        self.assertFalse('Edit' in response.rendered_content)
+
+    def test_edit_button_on_album_detail(self):
+        """Test edit button on album detail when owner."""
+        album = self.albums[0]
+        album.owner = self.users[0].profile
+        album.save()
+        self.client.force_login(self.users[0])
+        response = self.client.get('/images/albums/' + str(album.pk))
+        self.assertTrue('Edit' in response.rendered_content)

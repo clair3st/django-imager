@@ -1,27 +1,51 @@
 {% extends 'imagersite/layout.html' %}
-
+{% load staticfiles %}
 
 {% block body %}
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <h1>Published Photos</h1>
+            <h1>Published Photos
+            {% if tag %}
+            | {{tag}}
+            {% endif %}
+            </h1>
+
             <ul class="unstyled">
 
 {% for photo in photos %}
-                <li class="col-sm-4">
+                <li class="col-sm-3">
                     <a href="{% url 'photo_detail' photo.id %}">
                     <img style="object-fit: cover; height: 100px;" src="/media/{{ photo.image_file }}">
                     </a>
                     <p id="th-title"><b>{{ photo.title }}</b></p>
                     <p>{{ photo.description}}</p>
+                    {% if photo.tags.all %}
+                        <p><strong>Tags:</strong>
+                            {% for tag in photo.tags.all %}
+                                <a href="{% url 'photo_tag' tag.slug %}">{{ tag }}</a>
+                            {% endfor %}
+                        <p>
+                        {% endif %}
                     <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
-                </li>
-    
+                </li>    
 {% endfor %}
             </ul>
+
         </div>
     </div>
+            <div class="container text-center pages">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}"><img height="20" src="{% static 'imagersite/back-arrow.png' %}"></a>   
+            {% endif %}
+
+                {{ page_obj.number }} of {{ paginator.num_pages }}
+
+            {% if page_obj.has_next %}    
+            <a href="?page={{ page_obj.next_page_number }}"><img height="20" src="{% static 'imagersite/next-arrow.png' %}"></a>
+            {% endif %}
+            </div>
+
 </div>
 
 {% endblock body %}
