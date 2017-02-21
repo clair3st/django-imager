@@ -6,6 +6,10 @@ import factory
 from django.test import Client, RequestFactory
 from django.urls import reverse_lazy
 import datetime
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
+
 # Create your tests here.
 
 
@@ -545,6 +549,36 @@ class ProfileFrontEndTests(TestCase):
         self.client.force_login(user)
         response = self.client.get(reverse_lazy('library'))
         self.assertTrue("tags" in response.rendered_content)
+
+    def test_pagination_on_album_list(self):
+        """Test authenticated user sees pagination on filled Album List page."""
+        user = self.user_login()
+        for album in self.albums:
+            user.profile.albums.add(album)
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy("album_list"))
+        self.assertTrue("1 of 2" in response.rendered_content)
+
+    def test_pagination_on_photo_list(self):
+        """Test authenticated user sees pagination on filled Photo List page."""
+        user = self.user_login()
+        for photo in self.photos:
+            photo.photographer = user.profile
+        self.client.force_login(user)
+        response = self.client.get(reverse_lazy("photo_list"))
+        self.assertTrue("1 of 2" in response.rendered_content)
+
+    def test_pagination_on_album_detail(self):
+        """Test authenticated user sees pagination on Album detail page."""
+        user = self.user_login()
+        self.albums[0].owner = user.profile
+        for pic in self.photos:
+            pic.photographer = user.profile
+        self.albums[0].contents.set([pic for pic in self.photos])
+        self.albums[0].save()
+        self.client.force_login(user)
+        response = self.client.get("/images/albums/" + str(self.albums[0].pk))
+        self.assertTrue("1 of 2" in response.rendered_content)
 
     def test_private_photos_cant_view_by_others_403_error(self):
         """Test private photos cant be viewed."""

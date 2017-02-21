@@ -18,10 +18,10 @@
 
                 <h3 class="offset2">Albums</h3>
                 <section class="row">
-            <ul class="unstyled">
+                <ul class="unstyled">
                 {% for album in albums %}
 
-                <li class="col-sm-4">
+                <li class="col-sm-3">
                 <a href="{% url 'album_detail' album.id %}">
 
                     {% if album.cover_photo.image_file %}
@@ -35,14 +35,25 @@
                 </li>
                 {% endfor %}
                 </ul>
-                </section>
+                    </section>
+                <div class="container text-center pages">
+                {% if albums.has_previous %}
+                <a href="?albums={{ albums.previous_page_number }}&photos={{ photos.number }}"><img height="20" src="{% static 'imagersite/back-arrow.png' %}"></a>   
+                {% endif %}
+
+                    {{ albums.number }} of {{ albums.paginator.num_pages }}
+
+                {% if albums.has_next %}    
+                <a href="?albums={{ albums.next_page_number }}&photos={{ photos.number }}"><img height="20" src="{% static 'imagersite/next-arrow.png' %}"></a>
+                {% endif %}
+                </div>
 
                 <h3 class="offset2">Photos</h3>
                 <section class="row offset2">
                 <ul class="unstyled">
                 {% for photo in photos %}
                 
-                <li class="col-sm-4">
+                <li class="col-sm-3">
                 <a href="{% url 'photo_detail' photo.id %}">
                     <img style="object-fit: cover; height: 100px;" src="/media/{{ photo.image_file }}"></a>
                     <p id="th-title"><b>{{ photo.title }}</b></p>
@@ -56,11 +67,23 @@
                     <p class="date"><b>Date Uploaded: </b>{{ photo.date_uploaded}}</p>
                 </li>
                 {% endfor %}
-                </ul>
                 </section>
             </ul>
         </div>
     </div>
+                </ul>
+                <div class="container text-center pages">
+                {% if photos.has_previous %}
+                <a href="?photos={{ photos.previous_page_number }}&albums={{ albums.number }}"><img height="20" src="{% static 'imagersite/back-arrow.png' %}"></a>   
+                {% endif %}
+
+                    {{ photos.number }} of {{ photos.paginator.num_pages }}
+
+                {% if photos.has_next %}    
+                <a href="?photos={{ photos.next_page_number }}&albums={{ albums.number }}"><img height="20" src="{% static 'imagersite/next-arrow.png' %}"></a>
+                {% endif %}
+                </div>
 </div>
+
 
 {% endblock body %}

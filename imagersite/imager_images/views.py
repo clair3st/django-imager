@@ -9,6 +9,10 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 
+from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage
+from django.core.paginator import PageNotAnInteger
+
 
 class LibraryView(TemplateView):
     """Class based view for Library."""
@@ -19,8 +23,27 @@ class LibraryView(TemplateView):
         """Show a users galleries and photos."""
         the_user = self.request.user
         user_photos = Photo.objects.filter(photographer=the_user.profile)
+        paginator = Paginator(user_photos, 4)
+        page = self.request.GET.get('photos')
+
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+
         user_albums = Album.objects.filter(owner=the_user.profile)
-        context = {'albums': user_albums, 'photos': user_photos}
+        paginator1 = Paginator(user_albums, 4)
+        album_page = self.request.GET.get('albums')
+        try:
+            album_pages = paginator1.page(album_page)
+        except PageNotAnInteger:
+            album_pages = paginator1.page(1)
+        except EmptyPage:
+            album_pages = paginator1.page(paginator.num_pages)
+
+        context = {'photos': pages, 'albums': album_pages}
         return context
 
 
@@ -126,6 +149,7 @@ class AlbumList(ListView):
     template_name = "imager_images/albums.html"
     model = Album
     context_object_name = 'albums'
+    paginate_by = 4
 
     def get_queryset(self):
         """Get public albums."""
@@ -138,6 +162,7 @@ class PhotoList(ListView):
     template_name = "imager_images/photos.html"
     model = Photo
     context_object_name = 'photos'
+    paginate_by = 4
 
     def get_queryset(self):
         """Get public photos."""
@@ -190,7 +215,26 @@ class AlbumDetail(UserPassesTestMixin, DetailView):
 
     template_name = 'imager_images/album_detail.html'
     model = Album
+    paginate_by = 4
     raise_exception = True
+
+    def get_context_data(self):
+        """Get albums and photos and return them."""
+        album = Album.objects.get(id=self.kwargs['pk'])
+        photos = album.contents.all()
+
+        paginator = Paginator(photos, self.paginate_by)
+
+        page = self.request.GET.get('page')
+
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+
+        return {'album': album, 'photo': pages}
 
     def test_func(self):
         """Override the userpassestest test_func."""
