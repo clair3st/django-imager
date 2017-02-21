@@ -1,9 +1,13 @@
-"""Views for imager_images."""
+"""View for imager_images."""
 
 from imager_images.models import Photo, Album
 from django.contrib.auth.mixins import LoginRequiredMixin
 from imager_profile.models import UserProfile
-from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView
+from django.views.generic import (ListView,
+                                  DetailView,
+                                  CreateView,
+                                  TemplateView,
+                                  UpdateView)
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -218,7 +222,12 @@ class AlbumDetail(UserPassesTestMixin, DetailView):
     paginate_by = 4
     raise_exception = True
 
-    def get_context_data(self):
+    def test_func(self):
+        """Override the userpassestest test_func."""
+        album = get_object_or_404(Album, id=self.kwargs['pk'])
+        return album.published == 'PUBLIC' or album.owner.user == self.request.user
+
+    def get_context_data(self, object):
         """Get albums and photos and return them."""
         album = Album.objects.get(id=self.kwargs['pk'])
         photos = album.contents.all()
@@ -235,8 +244,3 @@ class AlbumDetail(UserPassesTestMixin, DetailView):
             pages = paginator.page(paginator.num_pages)
 
         return {'album': album, 'photo': pages}
-
-    def test_func(self):
-        """Override the userpassestest test_func."""
-        album = get_object_or_404(Album, id=self.kwargs['pk'])
-        return album.published == 'PUBLIC' or album.owner.user == self.request.user
