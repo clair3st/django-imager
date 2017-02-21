@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^profile/', include("imager_profile.urls")),
     url(r"^images/", include('imager_images.urls')),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
+    url(r'^api/v1/', include('imager_api.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
