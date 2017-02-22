@@ -91,3 +91,6 @@ ENV/
 # Ignore the files in the Media directory, but not the directory itself
 imagersite/MEDIA/*
 !imagersite/MEDIA/.gitkeep
+
+
+.DS_Store
