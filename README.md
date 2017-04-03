@@ -3,7 +3,7 @@
 
 **Authors:** Claire Gatenby and Colin Lamont
 
-##Getting Started
+## Getting Started
 
 Clone this repository into whatever directory you want to work from.
 ```
@@ -32,7 +32,7 @@ Finally, run the server in order to server the app on localhost
 Django will typically serve on port 8000, unless you specify otherwise. You can access the locally-served site at the address http://localhost:8000.
 
 
-##Current Models (outside of Django built-ins):
+## Current Models (outside of Django built-ins):
 
 This application allow users to store and organize photos. 
 
@@ -73,7 +73,7 @@ The model also supports the following API:
 - Cover Photo - Photo model
 
 
-##Current URL Routes
+## Current URL Routes
 
 - `/admin` Superuser admin page.
 - `/` Home page.
@@ -97,7 +97,7 @@ The model also supports the following API:
 - `/images/photos/<tag>` List of photos with an associated <tag>.
 
 
-##Running Tests
+## Running Tests
 
 Running tests for the django-imager is fairly straightforward. Navigate to the same directory as the manage.py file and type:
 ```
