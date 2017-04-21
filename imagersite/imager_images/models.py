@@ -37,7 +37,7 @@ class Photo(models.Model):
     tags = TaggableManager(blank=True)
 
     def __str__(self):
-        """String representation of UserProfile."""
+        """String representation of Photos."""
         return self.title
 
 
@@ -69,3 +69,7 @@ class Album(models.Model):
                                     related_name='cover',
                                     blank=True,
                                     null=True)
+
+    def __str__(self):
+        """String representation of Album."""
+        return self.title
