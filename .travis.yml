@@ -22,12 +22,6 @@ script:
 after_success:
   - coveralls
 
-# safelist
-branches:
-  only:
-  - models-1
-  - front-end-1
-
 notifications:
   email: false
 
