@@ -1,4 +1,4 @@
-# django-imager [![Build Status](https://travis-ci.org/clair3st/django-imager.svg?branch=front-end-1)](https://travis-ci.org/clair3st/django-imager)
+# django-imager [![Build Status](https://travis-ci.org/clair3st/django-imager.svg?branch=front-end-1)](https://travis-ci.org/clair3st/django-imager) [![Coverage Status](https://coveralls.io/repos/github/clair3st/django-imager/badge.svg?branch=master)](https://coveralls.io/github/clair3st/django-imager?branch=master)
  simple image management website using Django.
 
 **Authors:** Claire Gatenby and Colin Lamont
